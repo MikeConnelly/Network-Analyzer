@@ -5,6 +5,7 @@
   "main": "app.js",
   "dependencies": {
     "express": "^4.16.4",
+    "mongodb": "^3.2.3",
     "speedtest-net": "^1.5.1"
   },
   "devDependencies": {},
