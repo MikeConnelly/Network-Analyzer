@@ -1,10 +1,13 @@
 const express = require('express');
 const MongoClient = require('mongodb').MongoClient;
 const speedTest = require('speedtest-net');
-const interval = 1000;
+const nodemailer = require('nodemailer');
+const fromEmail = 'example@gmail.com';
+const fromPass = 'qwerty123'
+const interval = 30000;
 const mongo_url = 'mongodb://localhost:27017';
 const dbname = 'local';
-const port = 3000;
+const port = 5000;
 const app = express()
 const client = new MongoClient(mongo_url, {useNewUrlParser: true});
 
@@ -13,10 +16,19 @@ process.on('SIGINT', () => {
   process.exit();
 });
 
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: fromEmail,
+    pass: fromPass
+  }
+});
+
 client.connect().then(() => {
 
   console.log('mongo connected');
   const db = client.db(dbname);
+  //var col = db.collection('documents').drop()
 
   app.get('/api/speedtest/', (req, res) => {
     var test = speedTest({maxTime: 5000});
@@ -32,13 +44,24 @@ client.connect().then(() => {
     if (!req.query.from && !req.query.to) {
       res.send({error: 'missing parameters'});
     } else {
-      const cursor = db.collection('documents').find({}, {
-        dateTime: {$gt: req.query.from},
-        dateTime: {$lt: req.query.to}
+      const cursor = db.collection('documents').find({
+        dateTime: {
+          $gte: parseFloat(req.query.from), 
+          $lte: parseFloat(req.query.to)
+        }
       }).toArray((err, result) => {
-        console.log(result);
+        res.send(result);
       });
-      res.send(cursor);
+    }
+  });
+
+  app.post('/api/addemail/', (req, res) => {
+    const email = req.body.email;
+    if (!email) {
+      res.send({error: 'no email provided'});
+    } else {
+      const collection = db.collection('maillist');
+      collection.insertOne(email);
     }
   });
 
@@ -46,6 +69,10 @@ client.connect().then(() => {
 
   setInterval(() => {
     insertCurrentSpeed(db);
+  }, interval);
+
+  setInterval(() => {
+    sendEmail(db);
   }, interval);
 });
 
@@ -61,4 +88,22 @@ function insertCurrentSpeed(db) {
     err.dateTime = currentDateTime;
     collection.insertOne(err);
   });
+}
+
+function sendEmail(db) {
+  const mailList = db.collection('maillist');
+  const recipients = mailList.find({});
+  const mailOptions = {
+    from: fromEmail,
+    to: recipients.join(','),
+    subject: 'Network Speed Update',
+    text: '' // or html: 
+  };
+  transporter.sendEmail(mailOptions, (error, info) => {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  })
 }
