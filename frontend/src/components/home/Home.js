@@ -6,16 +6,24 @@ import Loader from 'react-loading-spinner';
 class Home extends Component {
 
   componentDidMount() {
-    this.props.actions.getRecent();
+    const currentDateTime = Date.now();
+    const now = new Date();
+    const twentyFourHourAgoTime = now.setDate(now.getDate() - 1);
+    this.props.actions.getRecent(twentyFourHourAgoTime, currentDateTime);
   }
 
   render() {
     const { data, isFetching } = this.props;
-    console.log(data);
 
     if (isFetching) {
       return (<Loader type="puff" color="#00BFFF" height="100" width="100" />);
     }
+
+    data.forEach(result => {
+      const date = new Date(result.dateTime);
+      result.dateObject = date;
+      result.dateObject.xaxis = date.getDate();
+    });
 
     return (
       <Graph data={data} />

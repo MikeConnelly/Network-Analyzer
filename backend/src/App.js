@@ -4,7 +4,8 @@ const speedTest = require('speedtest-net');
 const nodemailer = require('nodemailer');
 const fromEmail = 'example@gmail.com';
 const fromPass = 'qwerty123'
-const interval = 30000000000;
+const testInterval = 30000;
+const emailInterval = 100000000000;
 const mongo_url = 'mongodb://localhost:27017';
 const dbname = 'local';
 const port = 5000;
@@ -28,7 +29,7 @@ client.connect().then(() => {
 
   console.log('mongo connected');
   const db = client.db(dbname);
-  //var col = db.collection('documents').drop()
+  // var col = db.collection('documents').drop()
 
   app.get('/api/speedtest/', (req, res) => {
     var test = speedTest({maxTime: 5000});
@@ -67,6 +68,7 @@ client.connect().then(() => {
 
   app.listen(port, () => console.log(`listening on port ${port}`));
 
+  beginSpeedTestLoop(db);
   /*setInterval(() => {
     insertCurrentSpeed(db);
   }, interval);
@@ -75,6 +77,12 @@ client.connect().then(() => {
     //sendEmail(db);
   }, interval);*/
 });
+
+async function beginSpeedTestLoop(db) {
+  setInterval(() => {
+    insertCurrentSpeed(db);
+  }, testInterval);
+};
 
 function insertCurrentSpeed(db) {
   const collection = db.collection('documents');
@@ -90,20 +98,20 @@ function insertCurrentSpeed(db) {
   });
 }
 
-//function sendEmail(db) {
-//  const mailList = db.collection('maillist');
-//  const recipients = mailList.find({});
-//  const mailOptions = {
-//    from: fromEmail,
-//    to: recipients.join(','),
-//    subject: 'Network Speed Update',
-//    text: '' // or html: 
-//  };
-//  transporter.sendEmail(mailOptions, (error, info) => {
-//    if (error) {
-//      console.log(error);
-//    } else {
-//      console.log('Email sent: ' + info.response);
-//    }
-//  })
-//}
+function sendEmail(db) {
+  const mailList = db.collection('maillist');
+  const recipients = mailList.find({});
+  const mailOptions = {
+    from: fromEmail,
+    to: recipients.join(','),
+    subject: 'Network Speed Update',
+    text: '' // or html: 
+  };
+  transporter.sendEmail(mailOptions, (error, info) => {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  })
+}

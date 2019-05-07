@@ -23,10 +23,10 @@ export const getRecentFailure = error => {
   };
 };
 
-export const getRecent = () => {
+export const getRecent = (from, to) => {
   return function(dispatch) {
     dispatch(getRecentBegin());
-    fetch(`/api/getspeeds?from=${1557091298970}&to=${1557092678443}`)
+    fetch(`/api/getspeeds?from=${from}&to=${to}`)
       .then(res => res.json())
       .then(data => {
         dispatch(getRecentSuccess(data));

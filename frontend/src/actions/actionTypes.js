@@ -2,6 +2,6 @@ export const GET_RECENT_ACTIONS = {
   GET: 'DOC:GET',
   GET_SUCCESS: 'DOC:GET:SUCCESS',
   GET_FAILURE: 'DOC:GET:FAILURE'
-}
+};
 
 export default {GET_RECENT_ACTIONS};
