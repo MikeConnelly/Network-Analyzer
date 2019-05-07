@@ -1,29 +1,19 @@
 import React, {Component} from 'react';
 import Graph from '../graph/Graph';
+import PropTypes from 'prop-types';
 import Loader from 'react-loading-spinner';
 
 class Home extends Component {
-  constructor(props) {
-    super(props);
 
-    this.shouldComponentRender = this.shouldComponentRender.bind(this);
-  }
-
-  shouldComponentRender() {
-    const {loading} = this.props;
-    return loading;
-  }
-
-  componentWillMount() {
-    const {fetchRecent} = this.props;
-    fetchRecent();
+  componentDidMount() {
+    this.props.actions.getRecent();
   }
 
   render() {
-    const {data} = this.props;
+    const { data, isFetching } = this.props;
     console.log(data);
 
-    if (!this.shouldComponentRender()) {
+    if (isFetching) {
       return (<Loader type="puff" color="#00BFFF" height="100" width="100" />);
     }
 
@@ -32,5 +22,21 @@ class Home extends Component {
     );
   }
 }
+
+Home.propTypes = {
+  actions: PropTypes.shape({
+    getRecent: PropTypes.func
+  }),
+  data: PropTypes.object,
+  isFetching: PropTypes.bool
+};
+
+Home.defaultProps = {
+  actions: PropTypes.shape({
+    getRecent: () => {}
+  }),
+  data: {},
+  isFetching: false
+};
 
 export default Home;

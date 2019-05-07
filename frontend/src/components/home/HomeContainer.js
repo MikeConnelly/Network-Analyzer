@@ -1,19 +1,23 @@
-//import React, {Component} from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import fetchRecentAction from '../../redux/fetchRecent';
-import {getRecent, getRecentLoading, getRecentError} from '../../redux/reducers/getRecent';
+import * as getRecentActions from '../../actions/getRecent';
 import Home from './Home';
 
+export const HomeContainer = ({ actions, recent }) => {
+  return (
+    <Home actions={actions} data={recent.data} isFetching={recent.loading} />
+  );
+}
 
-const mapStateToProps = state => ({
-  data: getRecent(state),
-  loading: getRecentLoading(state),
-  error: getRecentError(state)
-});
+const mapStateToProps = state => {
+  return {
+    recent: state.getRecent
+  };
+}
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-  fetchRecent: () => dispatch(fetchRecentAction())
-});
+const mapDispatchToProps = dispatch => {
+  return {actions: bindActionCreators({...getRecentActions}, dispatch)};
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(HomeContainer);

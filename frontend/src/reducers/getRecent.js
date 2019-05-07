@@ -1,4 +1,4 @@
-import {GET_RECENT_BEGIN, GET_RECENT_SUCCESS, GET_RECENT_FAILURE} from '../actions/getRecent';
+import {GET_RECENT_ACTIONS as Actions} from '../actions/actionTypes';
 
 const initialState = {
   data: [],
@@ -8,23 +8,22 @@ const initialState = {
 
 export default function getRecentReducer(state = initialState, action) {
   switch (action.type) {
-    case GET_RECENT_BEGIN:
+    case Actions.GET:
       return {
-        ...state,
+        data: [],
         loading: true,
         error: null
       };
-    case GET_RECENT_SUCCESS:
+    case Actions.GET_SUCCESS:
       return {
-        ...state,
+        data: action.data,
         loading: false,
-        data: action.payload.data
+        error: null
       };
-    case GET_RECENT_FAILURE:
+    case Actions.GET_FAILURE:
       return {
-        ...state,
         loading: false,
-        error: action.payload.error,
+        error: action.error,
         data: []
       };
     default:

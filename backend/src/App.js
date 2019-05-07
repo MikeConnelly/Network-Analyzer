@@ -4,7 +4,7 @@ const speedTest = require('speedtest-net');
 const nodemailer = require('nodemailer');
 const fromEmail = 'example@gmail.com';
 const fromPass = 'qwerty123'
-const interval = 30000;
+const interval = 30000000000;
 const mongo_url = 'mongodb://localhost:27017';
 const dbname = 'local';
 const port = 5000;
@@ -67,13 +67,13 @@ client.connect().then(() => {
 
   app.listen(port, () => console.log(`listening on port ${port}`));
 
-  setInterval(() => {
+  /*setInterval(() => {
     insertCurrentSpeed(db);
   }, interval);
 
   setInterval(() => {
-    sendEmail(db);
-  }, interval);
+    //sendEmail(db);
+  }, interval);*/
 });
 
 function insertCurrentSpeed(db) {
@@ -90,20 +90,20 @@ function insertCurrentSpeed(db) {
   });
 }
 
-function sendEmail(db) {
-  const mailList = db.collection('maillist');
-  const recipients = mailList.find({});
-  const mailOptions = {
-    from: fromEmail,
-    to: recipients.join(','),
-    subject: 'Network Speed Update',
-    text: '' // or html: 
-  };
-  transporter.sendEmail(mailOptions, (error, info) => {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log('Email sent: ' + info.response);
-    }
-  })
-}
+//function sendEmail(db) {
+//  const mailList = db.collection('maillist');
+//  const recipients = mailList.find({});
+//  const mailOptions = {
+//    from: fromEmail,
+//    to: recipients.join(','),
+//    subject: 'Network Speed Update',
+//    text: '' // or html: 
+//  };
+//  transporter.sendEmail(mailOptions, (error, info) => {
+//    if (error) {
+//      console.log(error);
+//    } else {
+//      console.log('Email sent: ' + info.response);
+//    }
+//  })
+//}
