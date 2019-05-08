@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Graph from '../graph/Graph';
 import PropTypes from 'prop-types';
 import Loader from 'react-loading-spinner';
+import './Home.css';
 
 class Home extends Component {
 
@@ -26,7 +27,9 @@ class Home extends Component {
     });
 
     return (
-      <Graph data={data} />
+      <div className="home">
+        <Graph actions={this.props.actions} data={data} />
+      </div>
     );
   }
 }
@@ -40,9 +43,9 @@ Home.propTypes = {
 };
 
 Home.defaultProps = {
-  actions: PropTypes.shape({
+  actions: {
     getRecent: () => {}
-  }),
+  },
   data: {},
   isFetching: false
 };
