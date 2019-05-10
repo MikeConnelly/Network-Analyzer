@@ -45,18 +45,16 @@ class FilterButton extends Component {
         <Button
           aria-owns={anchorEl ? 'simple-menu' : undefined}
           aria-haspopup="true"
-          onClick={this.handleClick}
-        >
+          onClick={this.handleClick}>
           Timeframe
         </Button>
         <Menu
           id="simple-menu"
           anchorEl={anchorEl}
           open={Boolean(anchorEl)}
-          onClose={this.handleClose}
-        >
-          <MenuItem onClick={(e) => this.handleClose(e, 1)}>Past 24 hours</MenuItem>
-          <MenuItem onClick={(e) => this.handleClose(e, 2)}>Past week</MenuItem>
+          onClose={this.handleClose}>
+          <MenuItem onClick={e => this.handleClose(e, 1)}>Past 24 hours</MenuItem>
+          <MenuItem onClick={e => this.handleClose(e, 2)}>Past week</MenuItem>
         </Menu>
       </div>
     );

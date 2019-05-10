@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import Graph from '../graph/Graph';
 import PropTypes from 'prop-types';
 import Loader from 'react-loading-spinner';
 import './Home.css';
-
+import Graph from '../graph/Graph';
+import SpeedtestButton from '../speedtest-button/SpeedtestButton';
 class Home extends Component {
 
   componentDidMount() {
@@ -29,6 +29,7 @@ class Home extends Component {
     return (
       <div className="home">
         <Graph actions={this.props.actions} data={data} />
+        <SpeedtestButton />
       </div>
     );
   }
