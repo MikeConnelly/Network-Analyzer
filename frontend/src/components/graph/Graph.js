@@ -6,7 +6,7 @@ import FilterButton from './filter-button/FilterButton';
 class Graph extends Component {
   render() {
     return (
-      <div class="graph">
+      <div className="graph">
         <AreaChart 
           width={800}
           height={400}

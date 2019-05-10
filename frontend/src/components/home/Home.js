@@ -4,6 +4,9 @@ import Loader from 'react-loading-spinner';
 import './Home.css';
 import Graph from '../graph/Graph';
 import SpeedtestButton from '../speedtest-button/SpeedtestButton';
+import SpeedtestResults from '../speedtest-results/SpeedtestResults';
+
+
 class Home extends Component {
 
   componentDidMount() {
@@ -14,13 +17,13 @@ class Home extends Component {
   }
 
   render() {
-    const { data, isFetching } = this.props;
+    const { recentData, recentIsFetching, speedtestData, speedtestIsFetching } = this.props;
 
-    if (isFetching) {
+    if (recentIsFetching) {
       return (<Loader type="puff" color="#00BFFF" height="100" width="100" />);
     }
 
-    data.forEach(result => {
+    recentData.forEach(result => {
       const date = new Date(result.dateTime);
       result.dateObject = date;
       result.dateObject.xaxis = date.getDate();
@@ -28,8 +31,9 @@ class Home extends Component {
 
     return (
       <div className="home">
-        <Graph actions={this.props.actions} data={data} />
-        <SpeedtestButton />
+        <Graph actions={this.props.actions} data={recentData} />
+        <SpeedtestButton actions={this.props.actions} disabled={speedtestIsFetching} />
+        <SpeedtestResults data={speedtestData} />
       </div>
     );
   }
@@ -37,18 +41,22 @@ class Home extends Component {
 
 Home.propTypes = {
   actions: PropTypes.shape({
-    getRecent: PropTypes.func
+    getRecent: PropTypes.func.isRequired,
+    speedtest: PropTypes.func.isRequired
   }),
-  data: PropTypes.object,
-  isFetching: PropTypes.bool
+  recentData: PropTypes.array,
+  recentIsFetching: PropTypes.bool
 };
 
 Home.defaultProps = {
   actions: {
-    getRecent: () => {}
+    getRecent: () => {},
+    speedtest: () => {}
   },
-  data: {},
-  isFetching: false
+  recentData: [],
+  recentIsFetching: false,
+  speedtestData: {},
+  speedtestIsFetching: false
 };
 
 export default Home;

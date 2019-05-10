@@ -14,7 +14,7 @@ const styles = {
 class SpeedtestButton extends Component {
 
   handleClick = () => {
-    
+    this.props.actions.speedtest();
   }
 
   render() {
@@ -24,7 +24,8 @@ class SpeedtestButton extends Component {
       <div className='test-speed'>
         <Button
           onClick={this.handleClick}
-          size='variant'
+          disabled={this.props.disabled}
+          size='large'
           variant='contained'
           classes={{ root: classes.root }}>
           test speed now
