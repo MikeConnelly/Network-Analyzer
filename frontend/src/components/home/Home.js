@@ -18,7 +18,7 @@ class Home extends Component {
 
   render() {
     const { recentData, recentIsFetching, speedtestData, speedtestIsFetching } = this.props;
-
+    
     if (recentIsFetching) {
       return (<Loader type="puff" color="#00BFFF" height="100" width="100" />);
     }
@@ -33,7 +33,7 @@ class Home extends Component {
       <div className="home">
         <Graph actions={this.props.actions} data={recentData} />
         <SpeedtestButton actions={this.props.actions} disabled={speedtestIsFetching} />
-        <SpeedtestResults data={speedtestData} />
+        <SpeedtestResults data={speedtestData} isFetching={speedtestIsFetching} />
       </div>
     );
   }
@@ -42,16 +42,18 @@ class Home extends Component {
 Home.propTypes = {
   actions: PropTypes.shape({
     getRecent: PropTypes.func.isRequired,
-    speedtest: PropTypes.func.isRequired
+    speedTest: PropTypes.func.isRequired
   }),
   recentData: PropTypes.array,
-  recentIsFetching: PropTypes.bool
+  recentIsFetching: PropTypes.bool,
+  speedtestData: PropTypes.object,
+  speedtestIsFetching: PropTypes.bool
 };
 
 Home.defaultProps = {
   actions: {
     getRecent: () => {},
-    speedtest: () => {}
+    speedTest: () => {}
   },
   recentData: [],
   recentIsFetching: false,

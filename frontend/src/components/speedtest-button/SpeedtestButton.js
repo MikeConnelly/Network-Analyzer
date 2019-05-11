@@ -14,17 +14,17 @@ const styles = {
 class SpeedtestButton extends Component {
 
   handleClick = () => {
-    this.props.actions.speedtest();
+    this.props.actions.speedTest();
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, disabled } = this.props;
     
     return (
       <div className='test-speed'>
         <Button
           onClick={this.handleClick}
-          disabled={this.props.disabled}
+          disabled={disabled}
           size='large'
           variant='contained'
           classes={{ root: classes.root }}>
@@ -36,7 +36,13 @@ class SpeedtestButton extends Component {
 }
 
 SpeedtestButton.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  disabled: PropTypes.bool
+}
+
+SpeedtestButton.defaultProps = {
+  classes: {},
+  disabled: false
 }
 
 export default withStyles(styles)(SpeedtestButton);

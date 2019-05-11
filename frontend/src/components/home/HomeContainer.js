@@ -5,14 +5,15 @@ import * as getRecentActions from '../../actions/getRecent';
 import * as speedTestActions from '../../actions/speedTest';
 import Home from './Home';
 
-export const HomeContainer = ({ actions, recent, speedtest }) => {
+
+export const HomeContainer = ({ actions, recent, speedTest }) => {
   return (
     <Home 
       actions={actions} 
       recentData={recent.data} 
       recentIsFetching={recent.loading} 
-      speedtestData={speedtest.data}
-      speedtestIsFetching={speedtest.loading}
+      speedtestData={speedTest.data}
+      speedtestIsFetching={speedTest.loading}
     />
   );
 }
@@ -20,7 +21,7 @@ export const HomeContainer = ({ actions, recent, speedtest }) => {
 const mapStateToProps = state => {
   return {
     recent: state.getRecent,
-    speedtest: state.speedTest
+    speedTest: state.speedTest
   };
 }
 

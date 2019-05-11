@@ -23,9 +23,9 @@ export const speedTestFailure = error => {
   };
 };
 
-export const speedtest = () => {
+export const speedTest = () => {
   return function(dispatch) {
-    dispatch(speedTestSuccess());
+    dispatch(speedTestBegin());
     fetch(`/api/speedtest`)
       .then(res => res.json())
       .then(data => {
@@ -33,5 +33,5 @@ export const speedtest = () => {
         return data;
       })
       .catch(error => dispatch(speedTestFailure(error)));
-  }
-}
+  };
+};

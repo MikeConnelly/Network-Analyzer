@@ -38,7 +38,6 @@ class FilterButton extends Component {
 
   render() {
     const {anchorEl} = this.state;
-    console.log(anchorEl)
 
     return (
       <div>

@@ -31,6 +31,6 @@ export default function speedTestReducer(state = initialState, action) {
   }
 }
 
-export const getRecent = state => state.data;
-export const getRecentLoading = state => state.loading;
-export const getRecentError = state => state.error;
+export const speedTest = state => state.data;
+export const speedTestLoading = state => state.loading;
+export const speedTestError = state => state.error;
