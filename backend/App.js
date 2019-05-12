@@ -2,6 +2,7 @@ const express = require('express');
 const MongoClient = require('mongodb').MongoClient;
 const speedTest = require('speedtest-net');
 const nodemailer = require('nodemailer');
+const _ = require('lodash');
 const fromEmail = 'example@gmail.com';
 const fromPass = 'qwerty123'
 const testInterval = 300000;
@@ -57,7 +58,7 @@ client.connect().then(() => {
   });
 
   app.post('/api/addemail/', (req, res) => {
-    const email = req.body.email;
+    const email = _.get(req.body, 'email', undefined);
     if (!email) {
       res.send({error: 'no email provided'});
     } else {
@@ -113,5 +114,5 @@ function sendEmail(db) {
     } else {
       console.log('Email sent: ' + info.response);
     }
-  })
+  });
 }

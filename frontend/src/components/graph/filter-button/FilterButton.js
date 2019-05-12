@@ -32,8 +32,10 @@ class FilterButton extends Component {
 
   handleClose = (event, timeId) => {
     this.setState({ anchorEl: null });
-    const pastTime = this.getPastTime(timeId);
-    this.props.actions.getRecent(pastTime, Date.now());
+    if (timeId) {
+      const pastTime = this.getPastTime(timeId);
+      this.props.actions.getRecent(pastTime, Date.now());
+    }
   }
 
   render() {
@@ -42,16 +44,16 @@ class FilterButton extends Component {
     return (
       <div>
         <Button
-          aria-owns={anchorEl ? 'simple-menu' : undefined}
+          aria-owns={anchorEl ? 'filter-menu' : undefined}
           aria-haspopup="true"
           onClick={this.handleClick}>
           Timeframe
         </Button>
         <Menu
-          id="simple-menu"
+          id="filter-menu"
           anchorEl={anchorEl}
           open={Boolean(anchorEl)}
-          onClose={this.handleClose}>
+          onClose={e => this.handleClose(e, null)}>
           <MenuItem onClick={e => this.handleClose(e, 1)}>Past 24 hours</MenuItem>
           <MenuItem onClick={e => this.handleClose(e, 2)}>Past week</MenuItem>
         </Menu>
