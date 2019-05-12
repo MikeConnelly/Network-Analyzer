@@ -37,7 +37,6 @@ class NotificationMenu extends Component {
     if (this.anchorEl.contains(event.target)) {
       return;
     }
-
     this.setState({ open: false });
   }
 
@@ -60,7 +59,7 @@ class NotificationMenu extends Component {
             <Grow
               {...TransitionProps}
               id="notification-menu-grow"
-              style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom'}}>
+              style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}>
               <Paper>
                 <ClickAwayListener onClickAway={this.handleClose}>
                   <MenuList>
