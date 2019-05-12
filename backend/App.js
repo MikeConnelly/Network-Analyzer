@@ -6,7 +6,6 @@ const _ = require('lodash');
 const fromEmail = 'example@gmail.com';
 const fromPass = 'qwerty123'
 const testInterval = 300000;
-const emailInterval = 100000000000;
 const mongo_url = 'mongodb://localhost:27017';
 const dbname = 'local';
 const port = 5000;
@@ -25,6 +24,10 @@ const transporter = nodemailer.createTransport({
     pass: fromPass
   }
 });
+
+const dailyList = [];
+const weeklyList = [];
+const monthlyList = [];
 
 client.connect().then(() => {
 
@@ -46,44 +49,83 @@ client.connect().then(() => {
     if (!req.query.from && !req.query.to) {
       res.send({error: 'missing parameters'});
     } else {
-      const cursor = db.collection('documents').find({
+      db.collection('documents').find({
         dateTime: {
           $gte: parseFloat(req.query.from), 
           $lte: parseFloat(req.query.to)
         }
       }).toArray((err, result) => {
-        res.send(result);
+        if (err) res.send(err);
+        else res.send(result);
       });
     }
   });
 
   app.post('/api/addemail/', (req, res) => {
     const email = _.get(req.body, 'email', undefined);
+    const options = _.get(req.body, 'options', undefined);
     if (!email) {
       res.send({error: 'no email provided'});
     } else {
       const collection = db.collection('maillist');
-      collection.insertOne(email);
+      const doc = {
+        email: email,
+        options: options
+      };
+      collection.insertOne(doc);
+      pushToMailLists(email, options.frequency);
+      sendFirstEmail(email);
     }
   });
 
-  app.listen(port, () => console.log(`listening on port ${port}`));
+  setupMailLists(db);
 
   beginSpeedTestLoop(db);
-  /*setInterval(() => {
-    insertCurrentSpeed(db);
-  }, interval);
 
-  setInterval(() => {
-    //sendEmail(db);
-  }, interval);*/
+  app.listen(port, () => console.log(`listening on port ${port}`));
 });
 
-async function beginSpeedTestLoop(db) {
+function setupMailLists(db) {
+  db.collection('maillist').find({}).toArray((err, result) => {
+    if (err) throw err;
+    result.forEach(doc => {
+      pushToMailLists(doc.email, doc.options.frequency);
+    });
+  });
+  setupMailer();
+}
+
+function pushToMailLists(email, frequency) {
+  switch (frequency) {
+    case 'daily':
+      dailyList.push(email);
+    case 'weekly':
+      weeklyList.push(email);
+    case 'monthly':
+      monthlyList.push(email);
+    default:
+      dailyList.push(email);
+  }
+}
+
+function setupMailer() {
+  const dayInMs = 86400000;
+  setInterval(() => {
+    dailyList.forEach(email => sendEmail(email));
+  }, dayInMs);
+  setInterval(() => {
+    weeklyList.forEach(email => sendEmail(email));
+  }, (dayInMs*7));
+  setInterval(() => {
+    monthlyList.forEach(email => sendEmail(email));
+  }, (dayInMs*14)); // bi-monthly
+}
+
+function beginSpeedTestLoop(db) {
   setInterval(() => {
     insertCurrentSpeed(db);
   }, testInterval);
-};
+}
 
 function insertCurrentSpeed(db) {
   const collection = db.collection('documents');
@@ -99,12 +141,10 @@ function insertCurrentSpeed(db) {
   });
 }
 
-function sendEmail(db) {
-  const mailList = db.collection('maillist');
-  const recipients = mailList.find({});
+function sendEmail(email) {
   const mailOptions = {
     from: fromEmail,
-    to: recipients.join(','),
+    to: email,
     subject: 'Network Speed Update',
     text: '' // or html: 
   };
@@ -116,3 +156,11 @@ function sendEmail(db) {
     }
   });
 }
+
+function sendFirstEmail(email) {
+  return;
+}
+
+// on startup go through all saved addresses and call a funciton 
+// that uses setInterval for each email
+// (maybe split into daily, weekly, monthly lists)
