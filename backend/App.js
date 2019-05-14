@@ -2,6 +2,7 @@ const express = require('express');
 const MongoClient = require('mongodb').MongoClient;
 const speedTest = require('speedtest-net');
 const nodemailer = require('nodemailer');
+const bodyParser = require('body-parser');
 const _ = require('lodash');
 const fromEmail = 'example@gmail.com';
 const fromPass = 'qwerty123'
@@ -34,6 +35,8 @@ client.connect().then(() => {
   console.log('mongo connected');
   const db = client.db(dbname);
   // var col = db.collection('documents').drop()
+  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(bodyParser.json());
 
   app.get('/api/speedtest/', (req, res) => {
     var test = speedTest({maxTime: 5000});
@@ -92,7 +95,7 @@ function setupMailLists(db) {
       pushToMailLists(doc.email, doc.options.frequency);
     });
   });
-  setupMailer();
+  startDayCycle();
 }
 
 function pushToMailLists(email, frequency) {
@@ -106,19 +109,6 @@ function pushToMailLists(email, frequency) {
     default:
       dailyList.push(email);
   }
-}
-
-function setupMailer() {
-  const dayInMs = 86400000;
-  setInterval(() => {
-    dailyList.forEach(email => sendEmail(email));
-  }, dayInMs);
-  setInterval(() => {
-    weeklyList.forEach(email => sendEmail(email));
-  }, (dayInMs*7));
-  setInterval(() => {
-    monthlyList.forEach(email => sendEmail(email));
-  }, (dayInMs*14)); // bi-monthly
 }
 
 function beginSpeedTestLoop(db) {
@@ -141,12 +131,13 @@ function insertCurrentSpeed(db) {
   });
 }
 
-function sendEmail(email) {
+function sendUpdateEmail(address) {
   const mailOptions = {
     from: fromEmail,
-    to: email,
+    to: address,
     subject: 'Network Speed Update',
-    text: '' // or html: 
+    text: '',
+    html: ''
   };
   transporter.sendEmail(mailOptions, (error, info) => {
     if (error) {
@@ -157,10 +148,34 @@ function sendEmail(email) {
   });
 }
 
-function sendFirstEmail(email) {
-  return;
+function sendFirstEmail(address) {
+  const mailOptions = {
+    from: '',
+    to: address,
+    subject: 'Network Speed Update',
+    text: '',
+    html: ''
+  };
+  transporter.sendEmail(mailOptions, (error, info) => {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
 }
 
-// on startup go through all saved addresses and call a funciton 
-// that uses setInterval for each email
-// (maybe split into daily, weekly, monthly lists)
+function startDayCycle() {
+  setInterval(() => {
+    const d = new Date();
+    const day = d.getDay();
+    const date = d.getDate();
+    dailyList.forEach(address => sendUpdateEmail(address));
+    if (day === 0) { 
+      weeklyList.forEach(address => sendUpdateEmail(address));
+    }
+    if (date === 1) {
+      monthlyList.forEach(address => sendUpdateEmail(address));
+    }
+  }, 86400000);
+}
