@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import Popup from 'reactjs-popup';
 import TextField from '@material-ui/core/TextField';
-import { withStyles } from '@material-ui/core/styles'
+import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/styles';
 import './NotificationPopup.css';
+import { Typography } from '@material-ui/core';
 
 
 const styles = {
@@ -13,10 +15,22 @@ const styles = {
 
 class NotificationPopup extends Component {
   state = {
-    frequency: '',
+    email: '',
+    frequency: 'daily'
   };
 
+  handleClick = () => {
+    const options = {
+      frequency: this.state.frequency
+    };
+    this.props.actions.addEmail(this.state.email, options);
+  }
+
   handleChange = event => {
+    this.setState({ email: event.target.value });
+  }
+
+  handleSelect = event => {
     this.setState({ frequency: event.target });
   }
 
@@ -30,19 +44,25 @@ class NotificationPopup extends Component {
         closeOnDocumentClick
         onClose={this.props.close}>
         <div className="notification-popup">
+          <div className="popup-text">
+            <Typography variant="body1">
+              This text explains stuff.
+            </Typography>
+          </div>
           <form className="form" noValidate autoComplete="off">
             <TextField
               id="standard-dense"
               className="textfield"
               label="email address"
               margin="dense"
+              onChange={this.handleChange}
             />
             <TextField
               id="frequency-select"
               select
               label="frequency"
               className="textfield"
-              onChange={this.handleChange}
+              onChange={this.handleSelect}
               margin="normal"
               SelectProps={{
                 native: true,
@@ -56,6 +76,11 @@ class NotificationPopup extends Component {
                 </option>
               ))}
             </TextField>
+            <Button
+              onClick={this.handleClick}
+              disabled={!(this.state.email.includes('@') && this.state.email.includes('.'))}>
+              add email
+            </Button>
           </form>
         </div>
       </Popup>

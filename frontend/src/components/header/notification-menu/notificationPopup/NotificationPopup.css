@@ -1,6 +1,11 @@
 .notification-popup {
-  width: 750px;
-  height: 400px;
+  display: flex;
+  flex-direction: row;
+}
+
+.notification-popup .popup-text {
+  width: 250px;
+  height: 150px;
 }
 
 .notification-popup .form {

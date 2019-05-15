@@ -79,7 +79,7 @@ class NotificationMenu extends Component {
             </Grow>
           )}
         </Popper>
-        <NotificationPopup open={popup} close={this.closeModal} />
+        <NotificationPopup open={popup} close={this.closeModal} actions={this.props.actions} />
       </div>
     );
   }
