@@ -81,6 +81,26 @@ client.connect().then(() => {
     }
   });
 
+  app.delete('/api/removeemail', (req, res) => {
+    const email = _.get(req.body, 'email', undefined);
+    if (email) {
+      const collection = db.collection('maillist');
+      const doc = collection.find({email: email});
+      const freq = doc.options.frequency;
+      collection.deleteOne(doc);
+      switch (freq) {
+        case 'daily':
+          _.remove(dailyList, address => address === email);
+        case 'weekly':
+          _.remove(weeklyList, address => address === email);
+        case 'monthly':
+          _.remove(monthlyList, address => address === email);
+        default:
+          break;
+      }
+    }
+  });
+
   setupMailLists(db);
 
   beginSpeedTestLoop(db);
