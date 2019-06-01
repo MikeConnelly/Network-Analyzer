@@ -1,6 +1,6 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import * as getRecentActions from '../../actions/getRecent';
 import * as speedTestActions from '../../actions/speedTest';
 import Home from './Home';
@@ -27,7 +27,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    actions: bindActionCreators({...getRecentActions, ...speedTestActions}, dispatch)
+    actions: bindActionCreators({ ...getRecentActions, ...speedTestActions }, dispatch)
   };
 }
 

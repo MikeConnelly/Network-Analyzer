@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
-import { ClickAwayListener } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import MenuItem from '@material-ui/core/MenuItem';
-import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
-import MenuList from '@material-ui/core/MenuList';
-import Grow from '@material-ui/core/Grow';
-import NotificationPopup from './notificationPopup/NotificationPopup';
+import PropTypes from 'prop-types';
+import {
+  ClickAwayListener,
+  Button,
+  Paper,
+  Popper,
+  MenuList,
+  MenuItem,
+  Grow
+} from '@material-ui/core';
+import AddEmailPopup from './add-popup/AddEmailPopup';
+import RemoveEmailPopup from './remove-popup/RemoveEmailPopup';
+import './NotificationMenu.css';
 
 
 class NotificationMenu extends Component {
@@ -14,19 +19,19 @@ class NotificationMenu extends Component {
     super(props);
     this.state = {
       open: false,
-      popup: false
+      popup: ''
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
 
-  openModal = () => {
-    this.setState({ popup: true });
+  openModal = type => {
+    this.setState({ popup: type });
     this.handleClick();
   }
 
   closeModal = () => {
-    this.setState({ popup: false });
+    this.setState({ popup: '' });
   }
 
   handleClick = () => {
@@ -46,8 +51,10 @@ class NotificationMenu extends Component {
     return (
       <div className="notification-menu">
         <Button
+          className="notification-menu-button"
           aria-owns={open ? 'notification-menu' : undefined}
           aria-haspopup="true"
+          color="secondary"
           onClick={this.handleClick}
           buttonRef={node => {
             this.anchorEl = node;
@@ -65,12 +72,12 @@ class NotificationMenu extends Component {
                   <MenuList>
                     <MenuItem 
                       className="add-email"
-                      onClick={this.openModal}>
+                      onClick={event => this.openModal('add')}>
                       add email
                     </MenuItem>
                     <MenuItem 
                       className="remove-email"
-                      onClick={this.openModal}>
+                      onClick={event => this.openModal('remove')}>
                       remove email
                     </MenuItem>
                   </MenuList>
@@ -79,9 +86,34 @@ class NotificationMenu extends Component {
             </Grow>
           )}
         </Popper>
-        <NotificationPopup open={popup} close={this.closeModal} actions={this.props.actions} />
+        <div className="popup">
+            {(() => {
+              switch (popup) {
+                case 'add':
+                  return <AddEmailPopup open={true} close={this.closeModal} addEmail={this.props.actions.addEmail} />;
+                case 'remove':
+                  return <RemoveEmailPopup open={true} close={this.closeModal} removeEmail={this.props.actions.removeEmail} />;
+                default:
+                  return;
+              }
+            })()}
+        </div>
       </div>
     );
+  }
+}
+
+NotificationMenu.propTypes = {
+  actions: PropTypes.shape({
+    addEmail: PropTypes.func.isRequired,
+    removeEmail: PropTypes.func.isRequired
+  })
+}
+
+NotificationMenu.defaultProps = {
+  actions: {
+    addEmail: () => {},
+    removeEmail: () => {}
   }
 }
 
