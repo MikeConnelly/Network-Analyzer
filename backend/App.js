@@ -10,8 +10,8 @@ const testInterval = 300000;
 const mongo_url = 'mongodb://localhost:27017';
 const dbname = 'local';
 const port = 5000;
-const app = express()
-const client = new MongoClient(mongo_url, {useNewUrlParser: true});
+const app = express();
+const client = new MongoClient(mongo_url, { useNewUrlParser: true });
 
 process.on('SIGINT', () => {
   client.close();
@@ -34,7 +34,7 @@ client.connect().then(() => {
 
   console.log('mongo connected');
   const db = client.db(dbname);
-  // var col = db.collection('documents').drop()
+
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
 
@@ -54,7 +54,7 @@ client.connect().then(() => {
     } else {
       db.collection('documents').find({
         dateTime: {
-          $gte: parseFloat(req.query.from), 
+          $gte: parseFloat(req.query.from),
           $lte: parseFloat(req.query.to)
         }
       }).toArray((err, result) => {
@@ -75,9 +75,15 @@ client.connect().then(() => {
         email: email,
         options: options
       };
-      collection.insertOne(doc);
+      const replace = collection.replaceOne({email: email}, doc, {upsert: true});
+      if (replace.matchedCount > 0) {
+        _.remove(dailyList, email),
+        _.remove(weeklyList, email),
+        _.remove(monthlyList, email)
+      } else {
+        sendFirstEmail(email);
+      }
       pushToMailLists(email, options.frequency);
-      sendFirstEmail(email);
     }
   });
 
@@ -87,14 +93,17 @@ client.connect().then(() => {
       const collection = db.collection('maillist');
       const doc = collection.find({email: email});
       const freq = doc.options.frequency;
-      collection.deleteOne(doc);
+      collection.deleteOne({email, email});
       switch (freq) {
         case 'daily':
           _.remove(dailyList, address => address === email);
+          break;
         case 'weekly':
           _.remove(weeklyList, address => address === email);
+          break;
         case 'monthly':
           _.remove(monthlyList, address => address === email);
+          break;
         default:
           break;
       }
@@ -122,12 +131,15 @@ function pushToMailLists(email, frequency) {
   switch (frequency) {
     case 'daily':
       dailyList.push(email);
+      break;
     case 'weekly':
       weeklyList.push(email);
+      break;
     case 'monthly':
       monthlyList.push(email);
+      break;
     default:
-      dailyList.push(email);
+      break;
   }
 }
 
@@ -159,13 +171,13 @@ function sendUpdateEmail(address) {
     text: '',
     html: ''
   };
-  transporter.sendEmail(mailOptions, (error, info) => {
+  /*transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.log(error);
     } else {
       console.log('Email sent: ' + info.response);
     }
-  });
+  });*/
 }
 
 function sendFirstEmail(address) {
@@ -176,13 +188,13 @@ function sendFirstEmail(address) {
     text: '',
     html: ''
   };
-  transporter.sendEmail(mailOptions, (error, info) => {
+  /*transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.log(error);
     } else {
       console.log('Email sent: ' + info.response);
     }
-  });
+  });*/
 }
 
 function startDayCycle() {
@@ -191,7 +203,7 @@ function startDayCycle() {
     const day = d.getDay();
     const date = d.getDate();
     dailyList.forEach(address => sendUpdateEmail(address));
-    if (day === 0) { 
+    if (day === 0) {
       weeklyList.forEach(address => sendUpdateEmail(address));
     }
     if (date === 1) {
