@@ -4,12 +4,11 @@ import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 
 
-const styles = {
+const styles = theme => ({
   root: {
-    background: '#1dd13e',
     height: 48
   }
-}
+});
 
 class SpeedtestButton extends Component {
 
@@ -27,6 +26,7 @@ class SpeedtestButton extends Component {
           disabled={disabled}
           size='large'
           variant='contained'
+          color="secondary"
           classes={{ root: classes.root }}>
           test speed now
         </Button>
