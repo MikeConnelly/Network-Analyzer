@@ -39,10 +39,10 @@ class FilterButton extends Component {
   }
 
   render() {
-    const {anchorEl} = this.state;
+    const { anchorEl } = this.state;
 
     return (
-      <div>
+      <div className="filter-button">
         <Button
           aria-owns={anchorEl ? 'filter-menu' : undefined}
           aria-haspopup="true"

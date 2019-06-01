@@ -1,0 +1,10 @@
+.detail {
+  display: flex;
+  flex-direction: row;
+}
+
+.detail .detail-left,
+.detail .detail-right {
+  display: flex;
+  flex-direction: row;
+}

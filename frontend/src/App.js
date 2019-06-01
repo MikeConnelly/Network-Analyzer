@@ -1,7 +1,9 @@
 import React from 'react';
-import './App.css';
+import { Switch, Route } from 'react-router';
 import HomeContainer from './components/home/HomeContainer';
 import HeaderContainer from './components/header/HeaderContainer';
+import DetailContainer from './components/detail/DetailContainer';
+import './App.css';
 
 function App() {
   return (
@@ -10,7 +12,10 @@ function App() {
         <HeaderContainer />
       </header>
       <div className="content">
-        <HomeContainer />
+        <Switch>
+          <Route exact path='/' component={HomeContainer} />
+          <Route path='/detail/' component={DetailContainer} />
+        </Switch>
       </div>
     </div>
   );

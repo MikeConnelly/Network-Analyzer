@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Loader from 'react-loading-spinner';
-import './Home.css';
 import Graph from '../graph/Graph';
 import SpeedtestButton from '../speedtest-button/SpeedtestButton';
 import SpeedtestResults from '../speedtest-results/SpeedtestResults';
+import './Home.css';
 
 
 class Home extends Component {
