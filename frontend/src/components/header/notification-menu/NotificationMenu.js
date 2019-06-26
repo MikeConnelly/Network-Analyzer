@@ -7,11 +7,11 @@ import {
   Popper,
   MenuList,
   MenuItem,
-  Grow
+  Grow,
+  Typography
 } from '@material-ui/core';
 import AddEmailPopup from './add-popup/AddEmailPopup';
 import RemoveEmailPopup from './remove-popup/RemoveEmailPopup';
-import './NotificationMenu.css';
 
 
 class NotificationMenu extends Component {
@@ -51,15 +51,17 @@ class NotificationMenu extends Component {
     return (
       <div className="notification-menu">
         <Button
-          className="notification-menu-button"
+          id="notification-menu-button"
+          className="header-button"
           aria-owns={open ? 'notification-menu' : undefined}
           aria-haspopup="true"
-          color="secondary"
           onClick={this.handleClick}
           buttonRef={node => {
             this.anchorEl = node;
           }}>
-          Notifications
+          <Typography color="secondary">
+            Notifications
+          </Typography>
         </Button>
         <Popper open={open} anchorEl={this.anchorEl} transition>
           {({ TransitionProps, placement }) => (

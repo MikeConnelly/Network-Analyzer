@@ -4,3 +4,10 @@
     align-items: center;
     justify-content: center;
 }
+
+.home .speedtest-results #speeds,
+.home .speedtest-results #client,
+.home .speedtest-results #server {
+    display: inline-block;
+    vertical-align: top;
+}

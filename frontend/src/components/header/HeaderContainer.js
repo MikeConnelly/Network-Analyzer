@@ -1,8 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as addEmailActions from '../../actions/addEmail';
-import * as removeEmailActions from '../../actions/removeEmail';
+import * as addEmailActions from '../../actions/email/addEmail';
+import * as removeEmailActions from '../../actions/email/removeEmail';
 import Header from './Header';
 
 

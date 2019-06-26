@@ -22,7 +22,7 @@ class FilterButton extends Component {
         const lastWeekTime = now.setDate(now.getDate() - 7);
         return lastWeekTime;
       default:
-        return twentyFourHourAgoTime; 
+        return twentyFourHourAgoTime;
     }
   }
 

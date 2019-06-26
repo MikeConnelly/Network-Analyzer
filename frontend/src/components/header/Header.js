@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { Button } from '@material-ui/core'
+import { Button, Typography } from '@material-ui/core'
 import NotificationMenu from './notification-menu/NotificationMenu';
 import './Header.css';
 
@@ -8,21 +7,16 @@ class Header extends Component {
   render() {
     return (
       <div className="header">
-        <Link to="/">
-          <Button
-            className="home-page-button"
-            color="secondary">
-            home  
-          </Button>
-        </Link>
-        <Link to="/detail">
-          <Button
-            className="detail-page-button"
-            color="secondary">
-            Details
-          </Button>
-        </Link>
+        <Button id="home-page-button" className="header-button" onClick={() => window.location = '/'}>
+          <Typography color="secondary">Home</Typography>
+        </Button>
+        <Button id="detail-page-button" className="header-button" onClick={() => window.location = '/detail'}>
+          <Typography color="secondary">Details</Typography>
+        </Button>
         <NotificationMenu actions={this.props.actions} />
+        <Button id="settings-page-button" className="header-button" onClick={() => window.location = '/settings'}>
+          <Typography color="secondary">Settings</Typography>
+        </Button>
       </div>
     );
   }
