@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as getRecentActions from '../../actions/getRecent';
-import * as speedTestActions from '../../actions/speedTest';
+import * as getRecentActions from '../../actions/speeds/getRecent';
+import * as speedTestActions from '../../actions/speedtest/speedTest';
 import Home from './Home';
 
 
