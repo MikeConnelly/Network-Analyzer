@@ -1,20 +1,16 @@
 import React, {Component} from 'react';
-import {AreaChart, XAxis, YAxis, CartesianGrid, Tooltip, Area} from 'recharts';
+import {AreaChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Area} from 'recharts';
 import FilterButton from './filter-button/FilterButton';
 import './Graph.css';
 
 
 class Graph extends Component {
 
-  handleClick = event => {
-    console.log(event);
-  }
-
   render() {
     return (
       <div className="graph">
         <AreaChart 
-          onClick={this.handleClick}
+          onClick={this.props.openDetail}
           width={800}
           height={400}
           data={this.props.data}
@@ -23,6 +19,7 @@ class Graph extends Component {
           <YAxis />
           <CartesianGrid strokeDasharray="3 3" />
           <Tooltip />
+          <Legend />
           <Area type="monotone" dataKey="speeds.download" stroke="#8884d8" fill="#8884d8" />
           <Area type="monotone" dataKey="speeds.upload" stroke="#00dd55" fill="#00dd55" />
         </AreaChart>

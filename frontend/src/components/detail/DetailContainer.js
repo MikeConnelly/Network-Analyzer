@@ -1,30 +1,32 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as getRecentActions from '../../actions/getRecent';
+import * as getRecentActions from '../../actions/speeds/getRecent';
+import * as getOneActions from '../../actions/speeds/getOne';
 import Detail from './Detail';
 
 
-export const DetailContainer = ({ detailData, actions, recent }) => {
+export const DetailContainer = ({ actions, recent, specified }) => {
   return (
     <Detail 
-      detailData={detailData}
       actions={actions}
-      recentData={recent.data} 
-      recentIsFetching={recent.loading} 
+      recentData={recent.data}
+      recentIsFetching={recent.loading}
+      detailData={specified.data}
     />
   );
 }
 
 const mapStateToProps = state => {
   return {
-    recent: state.getRecent
+    recent: state.getRecent,
+    specified: state.getOne
   };
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    actions: bindActionCreators({ ...getRecentActions }, dispatch)
+    actions: bindActionCreators({ ...getRecentActions, ...getOneActions }, dispatch)
   };
 }
 

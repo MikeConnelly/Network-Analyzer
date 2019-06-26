@@ -1,21 +1,40 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import _isEmpty from 'lodash/isEmpty';
+import Loader from 'react-loading-spinner';
 import Graph from '../graph/Graph';
 import SpeedtestResults from '../speedtest-results/SpeedtestResults';
 import './Detail.css';
 
-
+    
 class Detail extends Component {
 
   componentDidMount() {
-    const currentDateTime = Date.now();
-    const now = new Date();
-    const twentyFourHourAgoTime = now.setDate(now.getDate() - 1);
-    this.props.actions.getRecent(twentyFourHourAgoTime, currentDateTime);
+    if (_isEmpty(this.props.recentData)) {
+      const currentDateTime = Date.now();
+      const now = new Date();
+      const twentyFourHourAgoTime = now.setDate(now.getDate() - 1);
+      this.props.actions.getRecent(twentyFourHourAgoTime, currentDateTime);
+    }
+    if (_isEmpty(this.props.detailData)) {
+      const url = window.location.pathname;
+      const speedtestDateTime = url.substring(url.lastIndexOf('/') + 1);
+      if (speedtestDateTime !== 'detail') {
+        this.props.actions.getOne(speedtestDateTime);
+      }
+    }
+  }
+
+  graphClicked = event => {
+    window.location = `/detail/${event.activePayload[0].payload.dateTime}`;
   }
 
   render() {
-    const { recentData, recentIsFetching } = this.props;
+    const { recentData, recentIsFetching, detailData } = this.props;
+    
+    if (recentIsFetching) {
+      return (<Loader type="puff" color="#00BFFF" height="100" width="100" />);
+    }
 
     recentData.forEach(result => {
       const date = new Date(result.dateTime);
@@ -26,10 +45,10 @@ class Detail extends Component {
     return (
       <div className="detail">
         <div className="detail-left">
-          <Graph actions={this.props.actions} data={this.props.recentData} />
+          <Graph actions={this.props.actions} data={this.props.recentData} openDetail={this.graphClicked} />
         </div>
         <div className="detail-right">
-          <SpeedtestResults data={this.props.detailData} />
+          {!_isEmpty(detailData) && <SpeedtestResults data={detailData} isFetching={false} />}
         </div>
       </div>
     );
@@ -38,20 +57,22 @@ class Detail extends Component {
 
 Detail.propTypes = {
   actions: PropTypes.shape({
-    getRecent: PropTypes.func.isRequired
+    getRecent: PropTypes.func.isRequired,
+    getOne: PropTypes.func.isRequired
   }),
-  detailData: PropTypes.object,
-  recentData: PropTypes.object,
-  recentIsFetching: PropTypes.bool
-}
+  recentData: PropTypes.array,
+  recentIsFetching: PropTypes.bool,
+  detailData: PropTypes.object
+};
 
 Detail.defaultProps = {
   actions: {
-    getRecent: () => {}
+    getRecent: () => {},
+    getOne: () => {}
   },
-  detailData: {},
   recentData: [],
-  recentIsFetching: false
-}
+  recentIsFetching: false,
+  detailData: {}
+};
 
 export default Detail;

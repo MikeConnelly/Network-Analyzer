@@ -6,5 +6,12 @@
 .detail .detail-left,
 .detail .detail-right {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  width: 50%;
+}
+
+.detail .speedtest-results #speeds,
+.detail .speedtest-results #client,
+.detail .speedtest-results #server {
+  padding: 2em
 }

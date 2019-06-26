@@ -16,6 +16,10 @@ class Home extends Component {
     this.props.actions.getRecent(twentyFourHourAgoTime, currentDateTime);
   }
 
+  graphClicked = event => {
+    window.location = `/detail/${event.activePayload[0].payload.dateTime}`;
+  }
+
   render() {
     const { recentData, recentIsFetching, speedtestData, speedtestIsFetching } = this.props;
     
@@ -31,7 +35,7 @@ class Home extends Component {
 
     return (
       <div className="home">
-        <Graph actions={this.props.actions} data={recentData} />
+        <Graph actions={this.props.actions} data={recentData} openDetail={this.graphClicked} />
         <SpeedtestButton actions={this.props.actions} disabled={speedtestIsFetching} />
         <SpeedtestResults data={speedtestData} isFetching={speedtestIsFetching} />
       </div>
