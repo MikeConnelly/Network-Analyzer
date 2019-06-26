@@ -1,4 +1,4 @@
-import {ADD_EMAIL_ACTIONS as Actions} from './actionTypes';
+import {ADD_EMAIL_ACTIONS as Actions} from '../actionTypes';
 
 export const addEmailBegin = () => {
   return {
@@ -22,10 +22,10 @@ export const addEmailFailure = error => {
 export const addEmail = (email, options) => {
   return function(dispatch) {
     dispatch(addEmailBegin());
-    fetch(`/api/addemail`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email, options: options })
+    fetch(`/api/email/`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email, options: options })
     })
       .then(() => dispatch(addEmailSuccess()))
       .catch(error => dispatch(addEmailFailure(error)));

@@ -1,4 +1,4 @@
-import {GET_RECENT_ACTIONS as Actions} from './actionTypes';
+import {GET_RECENT_ACTIONS as Actions} from '../actionTypes';
 
 export const getRecentBegin = () => {
   return {

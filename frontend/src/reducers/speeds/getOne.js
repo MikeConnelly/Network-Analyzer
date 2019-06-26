@@ -1,0 +1,36 @@
+import {GET_ONE_ACTIONS as Actions} from '../../actions/actionTypes';
+
+const initialState = {
+  data: {},
+  pending: false,
+  error: null
+};
+
+export default function getOneReducer(state = initialState, action) {
+  switch (action.type) {
+    case Actions.GET:
+      return {
+        data: {},
+        pending: true,
+        error: null
+      };
+    case Actions.GET_SUCCESS:
+      return {
+        data: action.data,
+        pending: false,
+        error: null
+      };
+    case Actions.GET_FAILURE:
+      return {
+        pending: false,
+        error: action.error,
+        data: {}
+      };
+    default:
+      return state;
+  }
+}
+
+export const getOne = state => state.data;
+export const getOnePending = state => state.pending;
+export const getOneError = state => state.error;

@@ -1,4 +1,4 @@
-import {REMOVE_EMAIL_ACTIONS as Actions} from '../actions/actionTypes';
+import {REMOVE_EMAIL_ACTIONS as Actions} from '../../actions/actionTypes';
 
 const initialState = {
   error: null

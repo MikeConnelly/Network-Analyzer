@@ -1,4 +1,4 @@
-import {REMOVE_EMAIL_ACTIONS as Actions} from './actionTypes';
+import {REMOVE_EMAIL_ACTIONS as Actions} from '../actionTypes';
 
 export const removeEmailBegin = () => {
   return {
@@ -22,7 +22,7 @@ export const removeEmailFailure = error => {
 export const removeEmail = email => {
   return function(dispatch) {
     dispatch(removeEmailBegin());
-    fetch(`/api/removeemail`, {
+    fetch(`/api/email/`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: email })

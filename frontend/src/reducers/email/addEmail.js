@@ -1,4 +1,4 @@
-import {ADD_EMAIL_ACTIONS as Actions} from '../actions/actionTypes';
+import {ADD_EMAIL_ACTIONS as Actions} from '../../actions/actionTypes';
 
 const initialState = {
   error: null

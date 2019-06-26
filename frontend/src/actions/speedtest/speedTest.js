@@ -1,4 +1,4 @@
-import {SPEED_TEST_ACTIONS as Actions} from './actionTypes';
+import {SPEED_TEST_ACTIONS as Actions} from '../actionTypes';
 
 export const speedTestBegin = () => {
   return {

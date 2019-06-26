@@ -1,4 +1,4 @@
-import {GET_RECENT_ACTIONS as Actions} from '../actions/actionTypes';
+import {GET_RECENT_ACTIONS as Actions} from '../../actions/actionTypes';
 
 const initialState = {
   data: [],

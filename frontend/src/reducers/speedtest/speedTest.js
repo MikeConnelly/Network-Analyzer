@@ -1,4 +1,4 @@
-import {SPEED_TEST_ACTIONS as Actions} from '../actions/actionTypes';
+import {SPEED_TEST_ACTIONS as Actions} from '../../actions/actionTypes';
 
 const initialState = {
   data: {},
