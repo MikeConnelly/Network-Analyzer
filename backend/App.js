@@ -64,7 +64,33 @@ client.connect().then(() => {
     }
   });
 
-  app.post('/api/addemail/', (req, res) => {
+  app.get('/api/getone/', (req, res) => {
+    if (!req.query.datetime) {
+      res.send({error: 'missing datetime parameter'});
+    } else {
+      db.collection('documents').find({
+        dateTime: {
+          $eq: parseFloat(req.query.datetime)
+        }
+      }).toArray((err, result) => {
+        if (err) res.send(err);
+        else res.json(...result);
+      });
+    }
+  });
+
+  app.get('/api/emails/', (req, res) => {
+    db.collection('maillist').find({}).toArray((err, result) => {
+      if (err) {
+        res.send(err)
+      } else {
+        result = result.map(doc => doc.email);
+        res.json(result);
+      }
+    });
+  });
+
+  app.post('/api/email/', (req, res) => {
     const email = _.get(req.body, 'email', undefined);
     const options = _.get(req.body, 'options', undefined);
     if (!email) {
@@ -87,7 +113,7 @@ client.connect().then(() => {
     }
   });
 
-  app.delete('/api/removeemail', (req, res) => {
+  app.delete('/api/email/', (req, res) => {
     const email = _.get(req.body, 'email', undefined);
     if (email) {
       const collection = db.collection('maillist');
@@ -107,6 +133,18 @@ client.connect().then(() => {
         default:
           break;
       }
+    }
+  });
+
+  app.get('/api/config/frequency/', (req, res) => {
+    res.json({frequency: testInterval});
+  });
+
+  app.put('/api/config/frequency/', (req, res) => {
+    if (!req.body.frequency) {
+      res.send({error: 'missing frequency parameter'});
+    } else {
+      testInterval = req.body.frequency;
     }
   });
 
