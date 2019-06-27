@@ -4,12 +4,18 @@ const speedTest = require('speedtest-net');
 const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
 const _ = require('lodash');
-const fromEmail = 'example@gmail.com';
-const fromPass = 'qwerty123'
-const testInterval = 300000;
-const mongo_url = 'mongodb://localhost:27017';
-const dbname = 'local';
-const port = 5000;
+const config = require('config');
+const testInterval = config.get('Collection.interval');
+const fromEmail = config.get('Mailer.email');
+const fromPass = config.get('Mailer.password');
+const mongo_url = config.get('Database.url');
+const dbname = config.get('Database.name');
+const port = config.get('Database.port');
+const EmailRouter = require('./routes/email');
+const SpeedsRouter = require('./routes/speeds');
+const SpeedtestRouter = require('./routes/speedtest');
+const ConfigRouter = require('./routes/config');
+
 const app = express();
 const client = new MongoClient(mongo_url, { useNewUrlParser: true });
 
@@ -38,6 +44,7 @@ client.connect().then(() => {
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
 
+  /*
   app.get('/api/speedtest/', (req, res) => {
     var test = speedTest({maxTime: 5000});
     test.on('data', data => {
@@ -47,7 +54,8 @@ client.connect().then(() => {
       res.send(err);
     });
   });
-
+*/
+  /*
   app.get('/api/getspeeds/', (req, res) => {
     if (!req.query.from && !req.query.to) {
       res.send({error: 'missing parameters'});
@@ -78,7 +86,8 @@ client.connect().then(() => {
       });
     }
   });
-
+*/
+/*
   app.get('/api/emails/', (req, res) => {
     db.collection('maillist').find({}).toArray((err, result) => {
       if (err) {
@@ -135,7 +144,8 @@ client.connect().then(() => {
       }
     }
   });
-
+*/
+/*
   app.get('/api/config/frequency/', (req, res) => {
     res.json({frequency: testInterval});
   });
@@ -147,6 +157,12 @@ client.connect().then(() => {
       testInterval = req.body.frequency;
     }
   });
+  */
+
+  app.use('/api/speedtest', new SpeedtestRouter());
+  app.use('/api/speeds', new SpeedsRouter(db));
+  app.use('/api/email', new EmailRouter(db));
+  app.use('/api/config', new ConfigRouter());
 
   setupMailLists(db);
 

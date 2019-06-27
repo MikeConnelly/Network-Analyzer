@@ -22,7 +22,7 @@ export const setFrequencyFailure = error => {
 export const setFrequency = freq => {
   return function(dispatch) {
     dispatch(setFrequencyBegin());
-    fetch(`/api/config/frequency/`, {
+    fetch(`/api/config/frequency`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ frequency: freq })

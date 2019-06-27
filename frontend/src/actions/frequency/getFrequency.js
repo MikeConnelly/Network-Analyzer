@@ -26,7 +26,7 @@ export const getFrequencyFailure = error => {
 export const getFrequency = () => {
   return function(dispatch) {
     dispatch(getFrequencyBegin());
-    fetch(`/api/config/frequency/`, {
+    fetch(`/api/config/frequency`, {
       method: 'GET',
       header: { 'Content-Type': 'application/json' }
     })

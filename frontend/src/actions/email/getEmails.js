@@ -23,10 +23,10 @@ export const getEmailsFailure = error => {
   };
 };
 
-export const getOne = dateTime => {
+export const getEmails = dateTime => {
   return function(dispatch) {
     dispatch(getEmailsBegin());
-    fetch('/api/emails')
+    fetch('/api/email/all')
       .then(res => res.json())
       .then(data => {
         dispatch(getEmailsSuccess(data));

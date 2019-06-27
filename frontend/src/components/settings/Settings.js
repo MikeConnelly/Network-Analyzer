@@ -5,7 +5,7 @@ import './Settings.css';
 class Settings extends Component {
 
   componentDidMount() {
-    this.props.action.getEmails();
+    this.props.actions.getEmails();
     this.props.actions.getFrequency();
   }
 
