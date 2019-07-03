@@ -13,7 +13,7 @@ export const SettingsContainer = ({ actions, getEmails, getFrequency }) => {
     <Settings 
       actions={actions}
       emails={getEmails.data}
-      emailsAreFetching={getEmails.data}
+      emailsAreFetching={getEmails.pending}
       frequency={getFrequency.data}
       frequencyIsFetching={getFrequency.pending}
     />

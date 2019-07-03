@@ -1,0 +1,15 @@
+.settings {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 30px;
+}
+
+.settings #frequency-input {
+    display: flex;
+    flex-direction: row;
+}
+
+.settings .settings-category {
+    padding-bottom: 20px;
+}

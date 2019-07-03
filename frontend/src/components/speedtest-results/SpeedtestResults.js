@@ -14,8 +14,8 @@ class SpeedtestResults extends Component {
         {isFetching 
           ? <div className="fetching">testing...</div>
           : (_isEmpty(data)
-              ? <></>
-              : <>
+              ? <div className="results-empty"></div>
+              : <div className="results">
                   <div id="speeds">
                     <ReactJson 
                       src={_get(data, 'speeds', '')} 
@@ -49,7 +49,7 @@ class SpeedtestResults extends Component {
                       enableEdit={false}
                     />
                   </div>
-                </>
+                </div>
             )
         }
       </div>
