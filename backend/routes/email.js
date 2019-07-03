@@ -1,6 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const _ = require('lodash');
+const sendFirstEmail = require('../services/mailer').sendFirstEmail;
+const pushToMailLists = require('../services/mailer').pushToMailLists;
+
 
 class EmailRouter extends express.Router {
   constructor(database) {
@@ -15,7 +18,7 @@ class EmailRouter extends express.Router {
         const email = _.get(req.body, 'email', undefined);
         const options = _.get(req.body, 'options', undefined);
         if (!email) {
-          res.send({error: 'no email provided'});
+          res.status(400).send({ message: 'no email provided' });
         } else {
           const collection = this.db.collection('maillist');
           const doc = {
@@ -58,12 +61,8 @@ class EmailRouter extends express.Router {
 
     this.get('/all', (req, res) => {
       this.db.collection('maillist').find({}).toArray((err, result) => {
-        if (err) {
-          res.send(err)
-        } else {
-          result = result.map(doc => doc.email);
-          res.json(result);
-        }
+        if (err) res.status(400).send({ message: err });
+        else res.json(result);
       });
     });
   }

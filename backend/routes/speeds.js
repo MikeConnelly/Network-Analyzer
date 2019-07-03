@@ -13,7 +13,7 @@ class SpeedsRouter extends express.Router {
       if (!req.params.datetime) {
         res.send({error: 'missing datetime parameter'});
       } else {
-        this.db.collection('documents').find({
+        this.db.collection('speeds').find({
           dateTime: {
             $eq: parseFloat(req.params.datetime)
           }
@@ -28,7 +28,7 @@ class SpeedsRouter extends express.Router {
       if (!req.query.from && !req.query.to) {
         res.send({error: 'missing query parameters'});
       } else {
-        this.db.collection('documents').find({
+        this.db.collection('speeds').find({
           dateTime: {
             $gte: parseFloat(req.query.from),
             $lte: parseFloat(req.query.to)
