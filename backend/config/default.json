@@ -1,14 +1,9 @@
 {
-  "Collection": {
-    "interval": 30000
-  },
-  "Mailer": {
-    "email": "example@gmail.com",
-    "password": "qwerty123"
+  "Server": {
+    "port": 5000
   },
   "Database": {
     "url": "mongodb://localhost:27017",
-    "name": "local",
-    "port": 5000
+    "name": "speedtest"
   }
 }
