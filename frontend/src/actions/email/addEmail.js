@@ -22,7 +22,7 @@ export const addEmailFailure = error => {
 export const addEmail = (email, options) => {
   return function(dispatch) {
     dispatch(addEmailBegin());
-    fetch(`/api/email/`, {
+    fetch(`/api/email`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: email, options: options })

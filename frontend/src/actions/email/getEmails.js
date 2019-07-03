@@ -23,7 +23,7 @@ export const getEmailsFailure = error => {
   };
 };
 
-export const getEmails = dateTime => {
+export const getEmails = () => {
   return function(dispatch) {
     dispatch(getEmailsBegin());
     fetch('/api/email/all')

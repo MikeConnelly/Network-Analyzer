@@ -1,7 +1,7 @@
 import {GET_EMAIL_ACTIONS as Actions} from '../../actions/actionTypes';
 
 const initialState = {
-  data: {},
+  data: [],
   pending: false,
   error: null
 };
@@ -10,7 +10,7 @@ export default function getEmailsReducer(state = initialState, action) {
   switch (action.type) {
     case Actions.GET:
       return {
-        data: {},
+        data: [],
         pending: true,
         error: null
       };
@@ -24,7 +24,7 @@ export default function getEmailsReducer(state = initialState, action) {
       return {
         pending: false,
         error: action.error,
-        data: {}
+        data: []
       };
     default:
       return state;
