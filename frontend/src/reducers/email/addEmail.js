@@ -6,7 +6,7 @@ const initialState = {
 
 export default function addEmailReducer(state = initialState, action) {
   switch (action.type) {
-    case Actions.POST_FAILURE:
+    case Actions.PUT_FAILURE:
       return {
         error: action.error
       };
