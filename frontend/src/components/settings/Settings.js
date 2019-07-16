@@ -13,6 +13,7 @@ import {
   ListItemSecondaryAction
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
+import customSnackbar from '../snackbar/Snackbar';
 import './Settings.css';
 
 const styles = {
@@ -33,6 +34,7 @@ class Settings extends Component {
     };
     this.handleFrequencyChange = this.handleFrequencyChange.bind(this);
     this.validateFrequency = this.validateFrequency.bind(this);
+    this.handleSetFrequency = this.handleSetFrequency.bind(this);
     this.state = {
       emails: [],
       frequency: this.defaultFrequency,
@@ -46,6 +48,7 @@ class Settings extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
     if (!_isEmpty(nextProps.frequency) && nextProps.frequency !== this.props.frequency) {
       this.setState({ frequency: this.convertMilliSecondsToHMS(nextProps.frequency.frequency) });
     }
@@ -56,16 +59,23 @@ class Settings extends Component {
 
   async handleRemoveEmail(address) {
     await this.props.actions.removeEmail(address);
-    const newEmails = this.state.emails.filter(email => email.email !== address);
+    const newEmails = this.state.emails.filter(email => email.address !== address);
     this.setState({ emails: newEmails });
+  }
+
+  handleSetFrequency() {
+    this.setState({ validFrequency: false });
+    this.props.actions.setFrequency(this.convertHMSToMilliSeconds(this.state.frequency));
+    customSnackbar();
+    this.props.actions.getFrequency();
   }
 
   generateEmailListItems() {
     return this.state.emails.map(email => (
-      <ListItem key={email.email}>
-        <ListItemText className="item-text" primary={email.email} />
+      <ListItem key={email.address}>
+        <ListItemText className="item-text" primary={email.address} />
         <ListItemSecondaryAction>
-          <IconButton edge="end" aria-label="Delete" onClick={() => this.handleRemoveEmail(email.email)}>
+          <IconButton edge="end" aria-label="Delete" onClick={() => this.handleRemoveEmail(email.address)}>
             <DeleteIcon />
           </IconButton>
         </ListItemSecondaryAction>
@@ -98,20 +108,20 @@ class Settings extends Component {
   }
 
   handleFrequencyChange(event, field) {
-    const new_frequency = this.state.frequency;
+    const newFrequency = this.state.frequency;
     const value = event.target.value === '' ? 0 : parseInt(event.target.value, 10);
     switch (field) {
       case 'h':
-        new_frequency.hours = value;
+        newFrequency.hours = value;
         break;
       case 'm':
-        new_frequency.minutes = value;
+        newFrequency.minutes = value;
         break;
       default:
-        new_frequency.seconds = value;
+        newFrequency.seconds = value;
         break;
     }
-    this.setState({ frequency: new_frequency });
+    this.setState({ frequency: newFrequency });
     this.validateFrequency();
   }
 
@@ -178,7 +188,7 @@ class Settings extends Component {
             <Button 
               id="validate-frequency-button"
               disabled={!this.state.validFrequency || this.convertHMSToMilliSeconds(this.state.frequency) === this.props.frequency.frequency}
-              onClick={() => this.props.actions.setFrequency(this.convertHMSToMilliSeconds(this.state.frequency))}>
+              onClick={() => this.handleSetFrequency()}>
               update
             </Button>
           </div>
