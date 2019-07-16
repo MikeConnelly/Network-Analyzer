@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+const _remove = require('lodash/remove');
 const dayInMilliSeconds = 86400000;
 const mailer = { transporter: null };
 const dailyList = [];
@@ -28,7 +29,7 @@ function setupMailLists(db) {
   db.collection('maillist').find({}).toArray((err, result) => {
     if (err) throw err;
     result.forEach(doc => {
-      pushToMailLists(doc.email, doc.options.frequency);
+      pushToMailLists(doc.address, doc.options.frequency);
     });
   });
   startDayCycle();
@@ -50,40 +51,35 @@ function pushToMailLists(email, frequency) {
   }
 }
 
-function sendUpdateEmail(address) {
-  if (!mailer.transporter) return;
-  const mailOptions = {
-    from: fromEmail,
-    to: address,
-    subject: 'Network Speed Update',
-    text: '',
-    html: ''
-  };
-  /*transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log('Email sent: ' + info.response);
-    }
-  });*/
+function removeFromMailLists(email) {
+  _remove(dailyList, email);
+  _remove(weeklyList, email);
+  _remove(monthlyList, email);
 }
 
-function sendFirstEmail(address) {
+async function sendUpdateEmail(address) {
   if (!mailer.transporter) return;
   const mailOptions = {
-    from: '',
+    from: 'Speedtester',
     to: address,
-    subject: 'Network Speed Update',
+    subject: 'Your Recent Network Speeds',
     text: '',
     html: ''
   };
-  /*transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log('Email sent: ' + info.response);
-    }
-  });*/
+  let info = await transporter.sendMail(mailOptions);
+  console.log('Error message: ' + info.response);
+}
+
+async function sendFirstEmail(address) {
+  if (!mailer.transporter) return;
+  const mailOptions = {
+    from: 'Speedtester',
+    to: address,
+    subject: 'You will now recieve email notifications',
+    text: ''
+  };
+  let info = await transporter.sendMail(mailOptions);
+  console.log('Error message: ' + info.response);
 }
 
 function startDayCycle() {
@@ -101,4 +97,4 @@ function startDayCycle() {
   }, dayInMilliSeconds);
 }
 
-module.exports = {setupMailer, sendFirstEmail, pushToMailLists};
+module.exports = {setupMailer, sendFirstEmail, pushToMailLists, removeFromMailLists};

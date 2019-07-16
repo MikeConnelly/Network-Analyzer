@@ -5,7 +5,7 @@ function setupSpeedtester(db) {
   db.collection('config').find({docName: {$eq: 'config'}}).toArray((err, result) => {
     if (err) throw err;
     speedtester.frequency = result[0].frequency;
-    beginSpeedTestLoop(db);
+    speedTestLoop(db);
   });
 }
 
@@ -19,10 +19,20 @@ function insertCurrentSpeed(db) {
   });
 }
 
-function beginSpeedTestLoop(db) {
-  setInterval(() => {
-    insertCurrentSpeed(db);
-  }, speedtester.frequency);
+function updateSpeedtesterFrequency(frequency) {
+  speedtester.frequency = frequency;
 }
 
-module.exports = setupSpeedtester;
+function speedTestLoop(db) {
+  let milliSecondsSinceLastTest = 0;
+  setInterval(() => {
+    if (milliSecondsSinceLastTest >= speedtester.frequency) {
+      insertCurrentSpeed(db);
+      milliSecondsSinceLastTest = 0;
+    } else {
+      milliSecondsSinceLastTest += 30000;
+    }
+  }, 30000);
+}
+
+module.exports = {setupSpeedtester, updateSpeedtesterFrequency};

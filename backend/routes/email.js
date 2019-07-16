@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const _ = require('lodash');
 const sendFirstEmail = require('../services/mailer').sendFirstEmail;
 const pushToMailLists = require('../services/mailer').pushToMailLists;
-
+const removeFromMailLists = require('../services/mailer').removeFromMailLists;
 
 class EmailRouter extends express.Router {
   constructor(database) {
@@ -14,7 +14,7 @@ class EmailRouter extends express.Router {
     this.use(bodyParser.json());
 
     this.route('/')
-      .post((req, res) => {
+      .put((req, res) => {
         const email = _.get(req.body, 'email', undefined);
         const options = _.get(req.body, 'options', undefined);
         if (!email) {
@@ -22,14 +22,12 @@ class EmailRouter extends express.Router {
         } else {
           const collection = this.db.collection('maillist');
           const doc = {
-            email: email,
+            address: email,
             options: options
           };
-          const replace = collection.replaceOne({email: email}, doc, {upsert: true});
+          const replace = collection.replaceOne({address: email}, doc, {upsert: true});
           if (replace.matchedCount > 0) {
-            _.remove(dailyList, email),
-            _.remove(weeklyList, email),
-            _.remove(monthlyList, email)
+            removeFromMailLists(email);
           } else {
             sendFirstEmail(email);
           }
@@ -40,22 +38,8 @@ class EmailRouter extends express.Router {
         const email = _.get(req.body, 'email', undefined);
         if (email) {
           const collection = this.db.collection('maillist');
-          const doc = collection.find({email: email});
-          const freq = doc.options.frequency;
-          collection.deleteOne({email, email});
-          switch (freq) {
-            case 'daily':
-              _.remove(dailyList, address => address === email);
-              break;
-            case 'weekly':
-              _.remove(weeklyList, address => address === email);
-              break;
-            case 'monthly':
-              _.remove(monthlyList, address => address === email);
-              break;
-            default:
-              break;
-          }
+          collection.deleteOne({address: email});
+          removeFromMailLists(address);
         }
       })
 

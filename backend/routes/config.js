@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const updateSpeedtesterFrequency = require('../services/speedtester').updateSpeedtesterFrequency;
 
 class ConfigRouter extends express.Router {
   constructor(database) {
@@ -27,6 +28,7 @@ class ConfigRouter extends express.Router {
             $set: {frequency: parseInt(req.body.frequency)}
           };
           this.collection.updateOne(this.configQuery, update);
+          updateSpeedtesterFrequency(req.body.frequency);
         }
       })
     
