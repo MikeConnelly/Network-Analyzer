@@ -16,12 +16,12 @@ const port = config.get('Server.port');
 const app = express();
 const client = new MongoClient(mongoURL, { useNewUrlParser: true });
 
-client.connect().then(() => {
+client.connect().then(async () => {
 
   console.log('mongo connected');
   const db = client.db(dbname);
 
-  checkForConfig(db);
+  await checkForConfig(db);
 
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
