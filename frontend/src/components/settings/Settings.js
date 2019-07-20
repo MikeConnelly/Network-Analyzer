@@ -13,7 +13,7 @@ import {
   ListItemSecondaryAction
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
-import customSnackbar from '../snackbar/Snackbar';
+//import customSnackbar from '../snackbar/Snackbar';
 import './Settings.css';
 
 const styles = {
@@ -48,7 +48,6 @@ class Settings extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
     if (!_isEmpty(nextProps.frequency) && nextProps.frequency !== this.props.frequency) {
       this.setState({ frequency: this.convertMilliSecondsToHMS(nextProps.frequency.frequency) });
     }
@@ -66,7 +65,7 @@ class Settings extends Component {
   handleSetFrequency() {
     this.setState({ validFrequency: false });
     this.props.actions.setFrequency(this.convertHMSToMilliSeconds(this.state.frequency));
-    customSnackbar();
+    //customSnackbar();
     this.props.actions.getFrequency();
   }
 

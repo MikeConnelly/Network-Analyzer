@@ -1,4 +1,5 @@
 import {SPEED_TEST_ACTIONS as Actions} from '../actionTypes';
+import proxy from '../proxy';
 
 export const speedTestBegin = () => {
   return {
@@ -26,7 +27,7 @@ export const speedTestFailure = error => {
 export const speedTest = () => {
   return function(dispatch) {
     dispatch(speedTestBegin());
-    fetch(`/api/speedtest`)
+    fetch(`${proxy()}/api/speedtest`)
       .then(res => res.json())
       .then(data => {
         dispatch(speedTestSuccess(data));

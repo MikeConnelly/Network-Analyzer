@@ -1,4 +1,5 @@
 import {GET_RECENT_ACTIONS as Actions} from '../actionTypes';
+import proxy from '../proxy';
 
 export const getRecentBegin = () => {
   return {
@@ -26,7 +27,7 @@ export const getRecentFailure = error => {
 export const getRecent = (from, to) => {
   return function(dispatch) {
     dispatch(getRecentBegin());
-    fetch(`/api/speeds/many?from=${from}&to=${to}`)
+    fetch(`${proxy()}/api/speeds/many?from=${from}&to=${to}`)
       .then(res => res.json())
       .then(data => {
         dispatch(getRecentSuccess(data));

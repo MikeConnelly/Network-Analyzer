@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const updateSpeedtesterFrequency = require('../services/speedtester').updateSpeedtesterFrequency;
+const { updateSpeedtesterFrequency } = require('../services/speedtester');
 
 class ConfigRouter extends express.Router {
   constructor(database) {

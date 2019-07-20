@@ -1,9 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const _ = require('lodash');
-const sendFirstEmail = require('../services/mailer').sendFirstEmail;
-const pushToMailLists = require('../services/mailer').pushToMailLists;
-const removeFromMailLists = require('../services/mailer').removeFromMailLists;
+const { sendFirstEmail } = require('../services/mailer');
+const { pushToMailLists } = require('../services/mailer');
+const { removeFromMailLists } = require('../services/mailer');
 
 class EmailRouter extends express.Router {
   constructor(database) {

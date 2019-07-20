@@ -1,4 +1,5 @@
 import {GET_EMAIL_ACTIONS as Actions} from '../actionTypes';
+import proxy from '../proxy';
 
 export const getEmailsBegin = () => {
   return {
@@ -26,7 +27,7 @@ export const getEmailsFailure = error => {
 export const getEmails = () => {
   return function(dispatch) {
     dispatch(getEmailsBegin());
-    fetch('/api/email/all')
+    fetch(`${proxy()}/api/email/all`)
       .then(res => res.json())
       .then(data => {
         dispatch(getEmailsSuccess(data));
