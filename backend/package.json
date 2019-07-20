@@ -10,10 +10,13 @@
     "lodash": "^4.17.11",
     "mongodb": "^3.2.3",
     "nodemailer": "^6.1.1",
+    "nodemon": "^1.19.1",
     "speedtest-net": "^1.5.1"
   },
   "devDependencies": {},
   "scripts": {
+    "start": "nodemon App.js",
+    "start-docker": "NODE_ENV=production node App.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
