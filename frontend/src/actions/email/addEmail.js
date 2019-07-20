@@ -1,4 +1,5 @@
 import {ADD_EMAIL_ACTIONS as Actions} from '../actionTypes';
+import proxy from '../proxy';
 
 export const addEmailBegin = () => {
   return {
@@ -22,7 +23,7 @@ export const addEmailFailure = error => {
 export const addEmail = (email, options) => {
   return function(dispatch) {
     dispatch(addEmailBegin());
-    fetch(`/api/email`, {
+    fetch(`${proxy()}/api/email`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: email, options: options })

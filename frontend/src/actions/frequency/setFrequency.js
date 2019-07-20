@@ -1,4 +1,5 @@
 import {SET_FREQUENCY_ACTIONS as Actions} from '../actionTypes';
+import proxy from '../proxy';
 
 export const setFrequencyBegin = () => {
   return {
@@ -22,7 +23,7 @@ export const setFrequencyFailure = error => {
 export const setFrequency = freq => {
   return function(dispatch) {
     dispatch(setFrequencyBegin());
-    fetch(`/api/config/frequency`, {
+    fetch(`${proxy()}/api/config/frequency`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ frequency: freq })

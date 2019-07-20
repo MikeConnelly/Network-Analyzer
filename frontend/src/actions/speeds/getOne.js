@@ -1,4 +1,5 @@
 import {GET_ONE_ACTIONS as Actions} from '../actionTypes';
+import proxy from '../proxy';
 
 export const getOneBegin = () => {
   return {
@@ -26,7 +27,7 @@ export const getOneFailure = error => {
 export const getOne = dateTime => {
   return function(dispatch) {
     dispatch(getOneBegin());
-    fetch(`/api/speeds/one/${dateTime}`)
+    fetch(`${proxy()}/api/speeds/one/${dateTime}`)
       .then(res => res.json())
       .then(data => {
         dispatch(getOneSuccess(data));

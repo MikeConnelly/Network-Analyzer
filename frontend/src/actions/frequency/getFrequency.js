@@ -1,4 +1,5 @@
 import {GET_FREQUENCY_ACTIONS as Actions} from '../actionTypes';
+import proxy from '../proxy';
 
 export const getFrequencyBegin = () => {
   return {
@@ -26,7 +27,7 @@ export const getFrequencyFailure = error => {
 export const getFrequency = () => {
   return function(dispatch) {
     dispatch(getFrequencyBegin());
-    fetch(`/api/config/frequency`, {
+    fetch(`${proxy()}/api/config/frequency`, {
       method: 'GET',
       header: { 'Content-Type': 'application/json' }
     })

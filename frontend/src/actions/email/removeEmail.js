@@ -1,4 +1,5 @@
 import {REMOVE_EMAIL_ACTIONS as Actions} from '../actionTypes';
+import proxy from '../proxy';
 
 export const removeEmailBegin = () => {
   return {
@@ -22,7 +23,7 @@ export const removeEmailFailure = error => {
 export const removeEmail = email => {
   return function(dispatch) {
     dispatch(removeEmailBegin());
-    fetch(`/api/email/`, {
+    fetch(`${proxy()}/api/email/`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: email })
