@@ -56,7 +56,8 @@ class ConfigRouter extends express.Router {
         }
       })
       .delete((req, res) => {
-
+        const update = {$set: {map: ""}};
+        this.collection.updateOne(this.configQuery, update);
       })
     
     this.route('/mailer')
@@ -88,7 +89,13 @@ class ConfigRouter extends express.Router {
         }
       })
       .delete((req, res) => {
-        
+        const update = {
+          $set: {
+            'mailer.user': "",
+            'mailer.pass': ""
+          }
+        }
+        this.collection.updateOne(this.configQuery, update);
       })
 
     this.put('/admin', (req, res) => {
