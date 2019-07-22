@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 import {AreaChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Area} from 'recharts';
-import FilterButton from './filter-button/FilterButton';
-import './Graph.css';
 
 
 class Graph extends Component {
@@ -23,7 +21,6 @@ class Graph extends Component {
           <Area type="monotone" dataKey="speeds.download" stroke="#8884d8" fill="#8884d8" />
           <Area type="monotone" dataKey="speeds.upload" stroke="#00dd55" fill="#00dd55" />
         </AreaChart>
-        <FilterButton actions={this.props.actions} />
       </div>
     );
   }

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Loader from 'react-loading-spinner';
-import Graph from '../graph/Graph';
+import GraphWrapper from '../graph/GraphWrapper';
 import SpeedtestButton from '../speedtest-button/SpeedtestButton';
 import SpeedtestResults from '../speedtest-results/SpeedtestResults';
 import './Home.css';
@@ -16,13 +16,9 @@ class Home extends Component {
     this.props.actions.getRecent(twentyFourHourAgoTime, currentDateTime);
   }
 
-  graphClicked = event => {
-    window.location = `/detail/${event.activePayload[0].payload.dateTime}`;
-  }
-
   render() {
     const { recentData, recentIsFetching, speedtestData, speedtestIsFetching } = this.props;
-    
+
     if (recentIsFetching) {
       return (<Loader type="puff" color="#00BFFF" height="100" width="100" />);
     }
@@ -35,7 +31,7 @@ class Home extends Component {
 
     return (
       <div className="home">
-        <Graph actions={this.props.actions} data={recentData} openDetail={this.graphClicked} />
+        <GraphWrapper actions={this.props.actions} data={recentData} />
         <SpeedtestButton actions={this.props.actions} disabled={speedtestIsFetching} />
         <SpeedtestResults data={speedtestData} isFetching={speedtestIsFetching} />
       </div>

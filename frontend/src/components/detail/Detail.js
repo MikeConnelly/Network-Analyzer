@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _isEmpty from 'lodash/isEmpty';
 import Loader from 'react-loading-spinner';
-import Graph from '../graph/Graph';
+import GraphWrapper from '../graph/GraphWrapper';
 import SpeedtestResults from '../speedtest-results/SpeedtestResults';
 import './Detail.css';
 
@@ -25,10 +25,6 @@ class Detail extends Component {
     }
   }
 
-  graphClicked = event => {
-    window.location = `/detail/${event.activePayload[0].payload.dateTime}`;
-  }
-
   render() {
     const { recentData, recentIsFetching, detailData } = this.props;
     
@@ -45,7 +41,7 @@ class Detail extends Component {
     return (
       <div className="detail">
         <div className="detail-left">
-          <Graph actions={this.props.actions} data={this.props.recentData} openDetail={this.graphClicked} />
+          <GraphWrapper actions={this.props.actions} data={this.props.recentData} openDetail={this.graphClicked} />
         </div>
         <div className="detail-right">
           {!_isEmpty(detailData) && <SpeedtestResults data={detailData} isFetching={false} />}
