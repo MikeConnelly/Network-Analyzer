@@ -39,7 +39,7 @@ class EmailRouter extends express.Router {
         if (email) {
           const collection = this.db.collection('maillist');
           collection.deleteOne({address: email});
-          removeFromMailLists(address);
+          removeFromMailLists(email);
         }
       })
 

@@ -9,14 +9,15 @@ const SpeedtestRouter = require('./routes/speedtest');
 const ConfigRouter = require('./routes/config');
 const { setupMailer } = require('./services/mailer');
 const { setupSpeedtester } = require('./services/speedtester');
-const dbport = config.get('Database.port');
-const dbname = config.get('Database.name');
+const mongoUser = config.get('Database.user');
+const mongoPass = config.get('Database.password');
+const mongoPort = config.get('Database.port');
+const dbName = config.get('Database.name');
 const port = config.get('Server.port');
-
 const env = process.env.NODE_ENV || 'development';
 const proxy = env === 'production' ? 'mongodb' : 'localhost';
-const mongoURL = `mongodb://${proxy}:${dbport}/`;
-
+const mongoURL = `mongodb://${proxy}:${mongoPort}/`;
+// ${dbName}?authSource=admin
 const app = express();
 
 MongoClient.connect(mongoURL, {
@@ -30,7 +31,7 @@ async function run(err, client) {
   if (err) throw err;
 
   console.log(`mongo connected to ${mongoURL}`);
-  const db = client.db(dbname);
+  const db = client.db(dbName);
 
   await checkForConfig(db);
 

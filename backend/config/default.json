@@ -4,6 +4,8 @@
   },
   "Database": {
     "port": "27017",
-    "name": "speedtest"
+    "name": "speedtest",
+    "user": "admin",
+    "password": "password"
   }
 }
