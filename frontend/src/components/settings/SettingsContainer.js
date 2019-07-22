@@ -6,9 +6,10 @@ import * as addEmailActions from '../../actions/email/addEmail';
 import * as removeEmailActions from '../../actions/email/removeEmail';
 import * as getFrequencyActions from '../../actions/frequency/getFrequency';
 import * as setFrequencyActions from '../../actions/frequency/setFrequency';
+import * as getMailerActions from '../../actions/mailer/getMailerCreds';
 import Settings from './Settings';
 
-export const SettingsContainer = ({ actions, getEmails, getFrequency }) => {
+export const SettingsContainer = ({ actions, getEmails, getFrequency, getMailerCreds }) => {
   return (
     <Settings 
       actions={actions}
@@ -16,6 +17,8 @@ export const SettingsContainer = ({ actions, getEmails, getFrequency }) => {
       emailsAreFetching={getEmails.pending}
       frequency={getFrequency.data}
       frequencyIsFetching={getFrequency.pending}
+      mailer={getMailerCreds.data}
+      mailerIsFetching={getMailerCreds.pending}
     />
   );
 }
@@ -23,7 +26,8 @@ export const SettingsContainer = ({ actions, getEmails, getFrequency }) => {
 const mapStateToProps = state => {
   return {
     getEmails: state.getEmails,
-    getFrequency: state.getFrequency
+    getFrequency: state.getFrequency,
+    getMailerCreds: state.getMailerCreds
   };
 }
 
@@ -34,7 +38,8 @@ const mapDispatchToProps = dispatch => {
       ...addEmailActions, 
       ...removeEmailActions, 
       ...getFrequencyActions, 
-      ...setFrequencyActions
+      ...setFrequencyActions,
+      ...getMailerActions
     }, dispatch)
   };
 }

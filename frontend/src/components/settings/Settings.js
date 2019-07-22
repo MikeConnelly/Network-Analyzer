@@ -17,7 +17,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import './Settings.css';
 
 const styles = {
-  textField: {
+  shortTextField: {
     width: 30,
     margin: 5
   }
@@ -38,13 +38,18 @@ class Settings extends Component {
     this.state = {
       emails: [],
       frequency: this.defaultFrequency,
-      validFrequency: false
+      validFrequency: false,
+      mailer: {
+        address: '',
+        password: ''
+      }
     };
   }
 
   componentDidMount() {
     this.props.actions.getEmails();
     this.props.actions.getFrequency();
+    this.props.actions.getMailerCreds();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -137,6 +142,10 @@ class Settings extends Component {
     this.setState({ validFrequency: true });
   }
 
+  handleSetMailerCreds() {
+
+  }
+
   render() {
     const { classes } = this.props;
 
@@ -159,7 +168,7 @@ class Settings extends Component {
           <div id="frequency-input">
             <TextField
               id="hour-field"
-              className={classes.textField}
+              className={classes.shortTextField}
               label="hh"
               value={this.state.frequency.hours}
               InputLabelProps={{shrink: true}}
@@ -168,7 +177,7 @@ class Settings extends Component {
             />
             <TextField 
               id="minute-field"
-              className={classes.textField}
+              className={classes.shortTextField}
               label="mm"
               value={this.state.frequency.minutes}
               InputLabelProps={{shrink: true}}
@@ -177,7 +186,7 @@ class Settings extends Component {
             />
             <TextField 
               id="second-field"
-              className={classes.textField}
+              className={classes.shortTextField}
               label="ss"
               value={this.state.frequency.seconds}
               InputLabelProps={{shrink: true}}
@@ -188,6 +197,29 @@ class Settings extends Component {
               id="validate-frequency-button"
               disabled={!this.state.validFrequency || this.convertHMSToMilliSeconds(this.state.frequency) === this.props.frequency.frequency}
               onClick={() => this.handleSetFrequency()}>
+              update
+            </Button>
+          </div>
+        </div>
+        <div className="settings-category">
+          <Typography variant="h6">
+            Set Mailer Credentials
+          </Typography>
+          <div id="mailer-creds-input">
+            <TextField
+              id="email-address-field"
+              label="email address"
+              value={this.props.mailer.user}
+            />
+            <TextField
+              id="email-password-field"
+              label="password"
+              value={this.props.mailer.pass}
+            />
+            <Button 
+              id="update-mailer-button"
+              disabled={() => {}}
+              onClick={this.handleSetMailerCreds}>
               update
             </Button>
           </div>
