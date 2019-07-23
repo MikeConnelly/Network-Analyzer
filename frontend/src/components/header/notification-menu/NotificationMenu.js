@@ -59,7 +59,7 @@ class NotificationMenu extends Component {
           buttonRef={node => {
             this.anchorEl = node;
           }}>
-          <Typography color="secondary">
+          <Typography variant="h6" color="secondary">
             Notifications
           </Typography>
         </Button>
