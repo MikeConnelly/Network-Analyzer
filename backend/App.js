@@ -3,10 +3,7 @@ const bodyParser = require('body-parser');
 const config = require('config');
 const { MongoClient } = require('mongodb');
 const checkForConfig = require('./utils/configSetup');
-const EmailRouter = require('./routes/email');
-const SpeedsRouter = require('./routes/speeds');
-const SpeedtestRouter = require('./routes/speedtest');
-const ConfigRouter = require('./routes/config');
+const setupRoutes = require('./routes');
 const { setupMailer } = require('./services/mailer');
 const { setupSpeedtester } = require('./services/speedtester');
 const mongoUser = config.get('Database.user');
@@ -45,11 +42,7 @@ async function run(err, client) {
     next();
   });
 
-  app.use('/api/speedtest', new SpeedtestRouter());
-  app.use('/api/speeds', new SpeedsRouter(db));
-  app.use('/api/email', new EmailRouter(db));
-  app.use('/api/config', new ConfigRouter(db));
-
+  setupRoutes(app, db);
   setupMailer(db);
   setupSpeedtester(db);
 
