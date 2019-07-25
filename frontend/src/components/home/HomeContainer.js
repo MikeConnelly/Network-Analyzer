@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as getRecentActions from '../../actions/speeds/getRecent';
+import * as getOneActions from '../../actions/speeds/getOne';
 import * as speedTestActions from '../../actions/speedtest/speedTest';
 import Home from './Home';
 
@@ -27,7 +28,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    actions: bindActionCreators({ ...getRecentActions, ...speedTestActions }, dispatch)
+    actions: bindActionCreators({ ...getRecentActions, ...speedTestActions, ...getOneActions }, dispatch)
   };
 }
 

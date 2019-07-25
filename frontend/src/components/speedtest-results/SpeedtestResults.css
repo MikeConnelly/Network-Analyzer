@@ -1,0 +1,8 @@
+.speedtest-results .fetching {
+    height: 40px;
+    width: 400px;
+}
+
+.speedtest-results .results {
+    padding: 20px;
+}

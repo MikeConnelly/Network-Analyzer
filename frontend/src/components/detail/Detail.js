@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _isEmpty from 'lodash/isEmpty';
-import Loader from 'react-loading-spinner';
 import GraphWrapper from '../graph/GraphWrapper';
-import SpeedtestResults from '../speedtest-results/SpeedtestResults';
+import SpeedtestResultsWrapper from '../speedtest-results/SpeedtestResultsWrapper';
 import './Detail.css';
-
     
 class Detail extends Component {
 
@@ -29,7 +27,7 @@ class Detail extends Component {
     const { recentData, recentIsFetching, detailData } = this.props;
     
     if (recentIsFetching) {
-      return (<Loader type="puff" color="#00BFFF" height="100" width="100" />);
+      return <div className="detail"></div>;
     }
 
     recentData.forEach(result => {
@@ -44,7 +42,7 @@ class Detail extends Component {
           <GraphWrapper actions={this.props.actions} data={this.props.recentData} openDetail={this.graphClicked} />
         </div>
         <div className="detail-right">
-          {!_isEmpty(detailData) && <SpeedtestResults data={detailData} isFetching={false} />}
+          {!_isEmpty(detailData) && <SpeedtestResultsWrapper data={detailData} isFetching={false} />}
         </div>
       </div>
     );

@@ -6,9 +6,17 @@ import './GraphWrapper.css';
 class GraphWrapper extends Component {
 
   graphClicked = event => {
-    window.location = `/detail/${event.activePayload[0].payload.dateTime}`;
+    if (event) {
+      const speedtestDateTime = event.activePayload[0].payload.dateTime;
+      if (!window.location.pathname.includes('detail')) {
+        window.location = `/detail/${speedtestDateTime}`;
+      } else {
+        window.history.replaceState({}, '', `/detail/${speedtestDateTime}`);
+        this.props.actions.getOne(speedtestDateTime);
+      }
+    }
   }
-    
+
   render() {
     return (
       <div className="graph-wrapper">

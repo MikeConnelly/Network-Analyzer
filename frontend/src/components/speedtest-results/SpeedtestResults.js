@@ -1,56 +1,89 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
+import { LinearProgress, withStyles, Typography, Switch } from '@material-ui/core';
 import _isEmpty from 'lodash/isEmpty';
 import _get from 'lodash/get';
 import ReactJson from 'react-json-view';
+import './SpeedtestResults.css';
 
+const styles = {
+  root: {
+    flexGrow: 1
+  }
+};
 
 class SpeedtestResults extends Component {
+
+  simpleResults(data) {
+    return (
+      <div className="results" id="simple">
+        <Typography>
+          Download: {_get(data, 'speeds.download', '')} Mbps
+        </Typography>
+        <Typography>
+          Upload: {_get(data, 'speeds.download', '')} Mbps
+        </Typography>
+      </div>
+    );
+  }
+
+  advancedResults(data) {
+    return (
+      <div className="results">
+        <div className="result-section" id="speeds">
+          <ReactJson 
+            src={_get(data, 'speeds', '')} 
+            name="speeds"
+            displayDataTypes={false}
+            displayObjectSize={false}
+            enableAdd={false}
+            enableDelete={false}
+            enableEdit={false}
+          />
+        </div>
+        <div className="result-section" id="client">
+          <ReactJson 
+            src={_get(data, 'client', '')} 
+            name="client info"
+            displayDataTypes={false}
+            displayObjectSize={false}
+            enableAdd={false}
+            enableDelete={false}
+            enableEdit={false}
+          />
+        </div>
+        <div className="result-section" id="server">
+          <ReactJson 
+            src={_get(data, 'server', '')} 
+            name="server info"
+            displayDataTypes={false}
+            displayObjectSize={false}
+            enableAdd={false}
+            enableDelete={false}
+            enableEdit={false}
+          />
+        </div>
+      </div>
+    );
+  }
+
   render() {
-    const { data, isFetching } = this.props;
+    const { classes, data, isFetching, advanced } = this.props;
+
+    const resultFormat = advanced ? this.advancedResults(data) : this.simpleResults(data);
 
     return (
       <div className="speedtest-results">
         {isFetching 
-          ? <div className="fetching">testing...</div>
+          ? <div className={classNames(classes.root, 'fetching')}><LinearProgress variant="query" /></div>
           : (_isEmpty(data)
-              ? <div className="results-empty"></div>
-              : <div className="results">
-                  <div id="speeds">
-                    <ReactJson 
-                      src={_get(data, 'speeds', '')} 
-                      name="speeds"
-                      displayDataTypes={false}
-                      displayObjectSize={false}
-                      enableAdd={false}
-                      enableDelete={false}
-                      enableEdit={false}
-                    />
-                  </div>
-                  <div id="client">
-                    <ReactJson 
-                      src={_get(data, 'client', '')} 
-                      name="client info"
-                      displayDataTypes={false}
-                      displayObjectSize={false}
-                      enableAdd={false}
-                      enableDelete={false}
-                      enableEdit={false}
-                    />
-                  </div>
-                  <div id="server">
-                    <ReactJson 
-                      src={_get(data, 'server', '')} 
-                      name="server info"
-                      displayDataTypes={false}
-                      displayObjectSize={false}
-                      enableAdd={false}
-                      enableDelete={false}
-                      enableEdit={false}
-                    />
-                  </div>
-                </div>
-            )
+            ? <div className="results-empty" />
+            : <>
+                <Switch color="primary" checked={advanced} onChange={() => this.props.handleChange(advanced)} value="advanced" />
+                {resultFormat}
+              </>
+           )
         }
       </div>
     );
@@ -59,12 +92,16 @@ class SpeedtestResults extends Component {
 
 SpeedtestResults.propTypes = {
   data: PropTypes.object,
-  isFetching: PropTypes.bool
+  isFetching: PropTypes.bool,
+  advanced: PropTypes.bool,
+  handleChange: PropTypes.func.isRequired
 }
 
 SpeedtestResults.defaultProps = {
   data: {},
-  isFetching: false
+  isFetching: false,
+  advanced: false,
+  handleChange: () => {}
 }
 
-export default SpeedtestResults;
+export default withStyles(styles)(SpeedtestResults);

@@ -1,4 +1,4 @@
-import {combineReducers} from 'redux';
+import { combineReducers } from 'redux';
 import getRecent from './speeds/getRecent';
 import getOne from './speeds/getOne';
 import speedTest from './speedtest/speedTest';
@@ -8,7 +8,19 @@ import removeEmail from './email/removeEmail';
 import getFrequency from './frequency/getFrequency';
 import setFrequency from './frequency/setFrequency';
 import getMailerCreds from './mailer/getMailerCreds';
+import changeResultType from './results/changeResultType';
 
-const rootReducer = combineReducers({ getRecent, getOne, speedTest, getEmails, addEmail, removeEmail, getFrequency, setFrequency, getMailerCreds });
+const rootReducer = combineReducers({
+  getRecent,
+  getOne,
+  speedTest,
+  getEmails,
+  addEmail,
+  removeEmail,
+  getFrequency,
+  setFrequency,
+  getMailerCreds,
+  changeResultType
+});
 
 export default rootReducer;

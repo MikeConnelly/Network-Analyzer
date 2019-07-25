@@ -1,11 +1,15 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Loader from 'react-loading-spinner';
+import {Button, withStyles} from '@material-ui/core';
 import GraphWrapper from '../graph/GraphWrapper';
-import SpeedtestButton from '../speedtest-button/SpeedtestButton';
-import SpeedtestResults from '../speedtest-results/SpeedtestResults';
+import SpeedtestResultsWrapper from '../speedtest-results/SpeedtestResultsWrapper';
 import './Home.css';
 
+const styles = theme => ({
+  root: {
+    height: 48
+  }
+});
 
 class Home extends Component {
 
@@ -17,10 +21,10 @@ class Home extends Component {
   }
 
   render() {
-    const { recentData, recentIsFetching, speedtestData, speedtestIsFetching } = this.props;
+    const { classes, recentData, recentIsFetching, speedtestData, speedtestIsFetching } = this.props;
 
     if (recentIsFetching) {
-      return (<Loader type="puff" color="#00BFFF" height="100" width="100" />);
+      return <div className="home"></div>;
     }
 
     recentData.forEach(result => {
@@ -32,8 +36,16 @@ class Home extends Component {
     return (
       <div className="home">
         <GraphWrapper actions={this.props.actions} data={recentData} />
-        <SpeedtestButton actions={this.props.actions} disabled={speedtestIsFetching} />
-        <SpeedtestResults data={speedtestData} isFetching={speedtestIsFetching} />
+        <Button
+          onClick={this.props.actions.speedTest}
+          disabled={speedtestIsFetching}
+          size='large'
+          variant='contained'
+          color="secondary"
+          classes={{ root: classes.root }}>
+          test speed now
+        </Button>
+        <SpeedtestResultsWrapper data={speedtestData} isFetching={speedtestIsFetching} />
       </div>
     );
   }
@@ -61,4 +73,4 @@ Home.defaultProps = {
   speedtestIsFetching: false
 };
 
-export default Home;
+export default withStyles(styles)(Home);
