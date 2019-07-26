@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { AppBar, Button, Typography, withStyles } from '@material-ui/core'
+import classNames from 'classnames';
 import NotificationMenu from './notification-menu/NotificationMenu';
 import './Header.css';
 
@@ -28,14 +29,14 @@ class Header extends Component {
       <div className="header">
         <AppBar id="appbar" position="static">
           <Button id="home-page-button" className="header-button" onClick={() => window.location = '/'}>
-            <Typography className={homeUnderlined && classes.detailTitle} variant="h6" color="secondary">Home</Typography>
+            <Typography className={classNames(homeUnderlined && classes.detailTitle)} variant="h6" color="secondary">Home</Typography>
           </Button>
           <Button id="detail-page-button" className="header-button" onClick={() => window.location = '/detail'}>
-            <Typography className={detailUnderlined && classes.detailTitle} variant="h6" color="secondary">Details</Typography>
+            <Typography className={classNames(detailUnderlined && classes.detailTitle)} variant="h6" color="secondary">Details</Typography>
           </Button>
           <NotificationMenu actions={this.props.actions} />
           <Button id="settings-page-button" className="header-button" onClick={() => window.location = '/settings'}>
-            <Typography className={settingsUnderlined && classes.detailTitle} variant="h6" color="secondary">Settings</Typography>
+            <Typography className={classNames(settingsUnderlined && classes.detailTitle)} variant="h6" color="secondary">Settings</Typography>
           </Button>
         </AppBar>
       </div>

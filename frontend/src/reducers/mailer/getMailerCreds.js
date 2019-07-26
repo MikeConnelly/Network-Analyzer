@@ -1,7 +1,7 @@
 import {GET_MAILER_ACTIONS as Actions} from '../../actions/actionTypes';
 
 const initialState = {
-  data: {},
+  data: { user: '', pass: '' },
   pending: false,
   error: null
 };
@@ -10,7 +10,7 @@ export default function getMailerReducer(state = initialState, action) {
   switch (action.type) {
     case Actions.GET:
       return {
-        data: {},
+        data: { user: '', pass: '' },
         pending: true,
         error: null
       };
@@ -24,7 +24,7 @@ export default function getMailerReducer(state = initialState, action) {
       return {
         pending: false,
         error: action.error,
-        data: {}
+        data: { user: '', pass: '' }
       };
     default:
       return state;

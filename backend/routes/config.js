@@ -1,4 +1,5 @@
 const { updateSpeedtesterFrequency } = require('../services/speedtester');
+const { updateMailer } = require('../services/mailer');
 
 module.exports = (route, app, db) => {
   const collection = db.collection('config');
@@ -23,7 +24,7 @@ module.exports = (route, app, db) => {
         collection.updateOne(configQuery, update);
         updateSpeedtesterFrequency(req.body.frequency);
       }
-    })
+    });
   
   app.route(`${route}/map`)
     .get((req, res) => {
@@ -51,7 +52,7 @@ module.exports = (route, app, db) => {
     .delete((req, res) => {
       const update = {$set: {map: ""}};
       collection.updateOne(configQuery, update);
-    })
+    });
   
   app.route(`${route}/mailer`)
     .get((req, res) => {
@@ -63,7 +64,7 @@ module.exports = (route, app, db) => {
           if (configDoc.hasOwnProperty('mailer')) {
             res.json({ user: configDoc.mailer.user, pass: configDoc.mailer.pass });
           } else {
-            res.json({ user: null, pass: null });
+            res.json({ user: '', pass: '' });
           }
         }
       });
@@ -79,6 +80,7 @@ module.exports = (route, app, db) => {
           }
         }
         collection.updateOne(configQuery, update);
+        updateMailer(req.body.user, req.body.pass);
       }
     })
     .delete((req, res) => {
@@ -89,7 +91,8 @@ module.exports = (route, app, db) => {
         }
       }
       collection.updateOne(configQuery, update);
-    })
+      updateMailer(null);
+    });
 
   app.put(`${route}/admin`, (req, res) => {
     if (!req.body.user && !req.body.pass) {

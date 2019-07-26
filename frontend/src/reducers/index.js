@@ -8,6 +8,7 @@ import removeEmail from './email/removeEmail';
 import getFrequency from './frequency/getFrequency';
 import setFrequency from './frequency/setFrequency';
 import getMailerCreds from './mailer/getMailerCreds';
+import setMailerCreds from './mailer/setMailerCreds';
 import changeResultType from './results/changeResultType';
 
 const rootReducer = combineReducers({
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   getFrequency,
   setFrequency,
   getMailerCreds,
+  setMailerCreds,
   changeResultType
 });
 

@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 const _remove = require('lodash/remove');
+const _isEmpty = require('lodash/isEmpty');
 const dayInMilliSeconds = 86400000;
 const mailer = { transporter: null };
 const dailyList = [];
@@ -10,7 +11,10 @@ function setupMailer(db) {
   db.collection('config').find({docName: {$eq: 'config'}}).toArray((err, result) => {
     if (err) throw err;
     const config = result[0];
-    if (!config.hasOwnProperty('mailer.email') || !config.hasOwnProperty('mailer.password')) {
+    if (!config.hasOwnProperty('mailer.email') 
+        || !config.hasOwnProperty('mailer.password') 
+        || _isEmpty(config.mailer.email) 
+        || _isEmpty(config.mailer.password)) {
       console.log('no mailer setup');
     } else {
       mailer.transporter = nodemailer.createTransport({
@@ -23,6 +27,20 @@ function setupMailer(db) {
     }
     setupMailLists(db);
   });
+}
+
+function updateMailer(address, password) {
+  if (address === null) {
+    mailer.transporter = null;
+  } else {
+    mailer.transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: address,
+        pass: password
+      }
+    });
+  }
 }
 
 function setupMailLists(db) {
@@ -97,4 +115,4 @@ function startDayCycle() {
   }, dayInMilliSeconds);
 }
 
-module.exports = {setupMailer, sendFirstEmail, pushToMailLists, removeFromMailLists};
+module.exports = {setupMailer, updateMailer, sendFirstEmail, pushToMailLists, removeFromMailLists};
