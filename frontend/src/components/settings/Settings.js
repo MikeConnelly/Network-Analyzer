@@ -35,6 +35,7 @@ class Settings extends Component {
     this.handleFrequencyChange = this.handleFrequencyChange.bind(this);
     this.validateFrequency = this.validateFrequency.bind(this);
     this.handleSetFrequency = this.handleSetFrequency.bind(this);
+    this.handleSetMailerCreds = this.handleFrequencyChange.bind(this);
     this.state = {
       emails: [],
       frequency: this.defaultFrequency,
@@ -59,6 +60,10 @@ class Settings extends Component {
     if (!_isEmpty(nextProps.emails) && nextProps.emails !== this.props.emails) {
       this.setState({ emails: nextProps.emails });
     }
+    if (!_isEmpty(nextProps.mailer) && nextProps.mailer !== this.props.mailer) {
+      const newMailer = { address: nextProps.mailer.user, password: nextProps.mailer.pass };
+      this.setState({ mailer: newMailer });
+    }
   }
 
   async handleRemoveEmail(address) {
@@ -70,7 +75,6 @@ class Settings extends Component {
   handleSetFrequency() {
     this.setState({ validFrequency: false });
     this.props.actions.setFrequency(this.convertHMSToMilliSeconds(this.state.frequency));
-    //customSnackbar();
     this.props.actions.getFrequency();
   }
 
@@ -143,7 +147,7 @@ class Settings extends Component {
   }
 
   handleSetMailerCreds() {
-
+    this.props.actions.setMailerCreds(this.state.mailer);
   }
 
   render() {
@@ -193,13 +197,13 @@ class Settings extends Component {
               inputProps={{maxLength: 2}}
               onChange={(e) => this.handleFrequencyChange(e, 's')}
             />
-            <Button 
-              id="validate-frequency-button"
-              disabled={!this.state.validFrequency || this.convertHMSToMilliSeconds(this.state.frequency) === this.props.frequency.frequency}
-              onClick={() => this.handleSetFrequency()}>
-              update
-            </Button>
-          </div>
+            </div>
+          <Button 
+            id="validate-frequency-button"
+            disabled={!this.state.validFrequency || this.convertHMSToMilliSeconds(this.state.frequency) === this.props.frequency.frequency}
+            onClick={() => this.handleSetFrequency()}>
+            update
+          </Button>
         </div>
         <div className="settings-category">
           <Typography variant="h6">
@@ -209,18 +213,28 @@ class Settings extends Component {
             <TextField
               id="email-address-field"
               label="email address"
-              value={this.props.mailer.user}
+              value={this.state.mailer.address}
+              InputLabelProps={{shrink: true}}
+              onChange={event => {}}
             />
             <TextField
               id="email-password-field"
               label="password"
-              value={this.props.mailer.pass}
+              value={this.state.mailer.password}
+              InputLabelProps={{shrink: true}}
+              onChange={event => {}}
             />
             <Button 
               id="update-mailer-button"
-              disabled={() => {}}
+              disabled={false}
               onClick={this.handleSetMailerCreds}>
               update
+            </Button>
+            <Button
+              id="remove-mailer-button"
+              disabled={false}
+              onClick={() => {}}>
+              remove
             </Button>
           </div>
         </div>
@@ -235,10 +249,13 @@ Settings.propTypes = {
     addEmail: PropTypes.func.isRequired,
     removeEmail: PropTypes.func.isRequired,
     getFrequency: PropTypes.func.isRequired,
-    setFrequency: PropTypes.func.isRequired
+    setFrequency: PropTypes.func.isRequired,
+    getMailerCreds: PropTypes.func.isRequired,
+    setMailerCreds: PropTypes.func.isRequired
   }),
   emails: PropTypes.array,
-  frequency: PropTypes.object
+  frequency: PropTypes.object,
+  mailer: PropTypes.object
 };
 
 Settings.defaultProps = {
@@ -247,10 +264,13 @@ Settings.defaultProps = {
     addEmail: () => {},
     removeEmail: () => {},
     getFrequency: () => {},
-    setFrequency: () => {}
+    setFrequency: () => {},
+    getMailerCreds: () => {},
+    setMailerCreds: () => {}
   },
   emails: [],
-  frequency: {}
+  frequency: {},
+  mailer: { user: '', pass: '' }
 };
 
 export default withStyles(styles)(Settings);

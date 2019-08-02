@@ -5,11 +5,23 @@
     padding-top: 30px;
 }
 
-.settings #frequency-input {
-    display: flex;
-    flex-direction: row;
-}
-
 .settings .settings-category {
     padding-bottom: 20px;
+}
+
+.settings #maillist {
+    padding-top: 10px;
+}
+
+.settings #frequency-input {
+    padding-top: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.settings #mailer-creds-input {
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
 }

@@ -7,6 +7,7 @@ import * as removeEmailActions from '../../actions/email/removeEmail';
 import * as getFrequencyActions from '../../actions/frequency/getFrequency';
 import * as setFrequencyActions from '../../actions/frequency/setFrequency';
 import * as getMailerActions from '../../actions/mailer/getMailerCreds';
+import * as setMailerActions from '../../actions/mailer/setMailerCreds';
 import Settings from './Settings';
 
 export const SettingsContainer = ({ actions, getEmails, getFrequency, getMailerCreds }) => {
@@ -39,7 +40,8 @@ const mapDispatchToProps = dispatch => {
       ...removeEmailActions, 
       ...getFrequencyActions, 
       ...setFrequencyActions,
-      ...getMailerActions
+      ...getMailerActions,
+      ...setMailerActions
     }, dispatch)
   };
 }
