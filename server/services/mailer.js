@@ -1,6 +1,7 @@
 const nodemailer = require('nodemailer');
 const _remove = require('lodash/remove');
 const _isEmpty = require('lodash/isEmpty');
+const generateEmail = require('../utils/emailSetup');
 const dayInMilliSeconds = 86400000;
 const mailer = { transporter: null };
 const dailyList = [];
@@ -50,7 +51,7 @@ function setupMailLists(db) {
       pushToMailLists(doc.address, doc.options.frequency);
     });
   });
-  startDayCycle();
+  startDayCycle(db);
 }
 
 function pushToMailLists(email, frequency) {
@@ -75,14 +76,14 @@ function removeFromMailLists(email) {
   _remove(monthlyList, email);
 }
 
-async function sendUpdateEmail(address) {
+async function sendUpdateEmail(address, graph) {
   if (!mailer.transporter) return;
   const mailOptions = {
     from: 'Speedtester',
     to: address,
     subject: 'Your Recent Network Speeds',
     text: '',
-    html: ''
+    html: graph
   };
   let info = await transporter.sendMail(mailOptions);
   console.log('Error message: ' + info.response);
@@ -100,17 +101,22 @@ async function sendFirstEmail(address) {
   console.log('Error message: ' + info.response);
 }
 
-function startDayCycle() {
+function startDayCycle(db) {
   setInterval(() => {
     const d = new Date();
     const day = d.getDay();
     const date = d.getDate();
-    dailyList.forEach(address => sendUpdateEmail(address));
-    if (day === 0) {
-      weeklyList.forEach(address => sendUpdateEmail(address));
+    if (!_isEmpty(dailyList)) {
+      const dailyGraph = generateEmail(db, 'daily');
+      dailyList.forEach(address => sendUpdateEmail(address, dailyGraph));
     }
-    if (date === 1) {
-      monthlyList.forEach(address => sendUpdateEmail(address));
+    if (!_isEmpty(weeklyList) && day === 0) {
+      const weeklyGraph = generateEmail(db, 'weekly');
+      weeklyList.forEach(address => sendUpdateEmail(address, weeklyGraph));
+    }
+    if (!_isEmpty(monthlyList) && date === 1) {
+      const monthlyGraph = generateEmail(db, 'monthly');
+      monthlyList.forEach(address => sendUpdateEmail(address, monthlyGraph));
     }
   }, dayInMilliSeconds);
 }
