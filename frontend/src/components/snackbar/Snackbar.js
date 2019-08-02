@@ -20,7 +20,7 @@ export default function customSnackbar(message) {
     <SnackbarContent
       className={`snackbar-success ${green[600]}`}
       message={
-        <Typography>
+        <Typography variant="body1">
           <CheckCircleIcon className={{fontSize: 20}} />
           {message}
         </Typography>

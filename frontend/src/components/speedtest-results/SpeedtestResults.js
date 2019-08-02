@@ -18,10 +18,10 @@ class SpeedtestResults extends Component {
   simpleResults(data) {
     return (
       <div className="results" id="simple">
-        <Typography>
+        <Typography variant="body1">
           Download: {_get(data, 'speeds.download', '')} Mbps
         </Typography>
-        <Typography>
+        <Typography variant="body1">
           Upload: {_get(data, 'speeds.download', '')} Mbps
         </Typography>
       </div>
