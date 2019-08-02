@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -18,7 +18,6 @@ class DateFilter extends Component {
     const now = new Date();
     const twentyFourHourAgoTime = now.setDate(now.getDate() - 1);
     this.setState({ startDate: twentyFourHourAgoTime, endDate: Date.now() });
-    //this.props.actions.getRecent(twentyFourHourAgoTime, Date.now() );
   }
 
   handleChangeStart = async (date) => {
@@ -42,6 +41,7 @@ class DateFilter extends Component {
           startDate={this.state.startDate}
           endDate={this.state.endDate}
           onChange={this.handleChangeStart}
+          maxDate={this.state.endDate}
         />
         <DatePicker
           selected={this.state.endDate}
