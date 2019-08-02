@@ -6,6 +6,7 @@ const checkForConfig = require('./utils/configSetup');
 const setupRoutes = require('./routes');
 const { setupMailer } = require('./services/mailer');
 const { setupSpeedtester } = require('./services/speedtester');
+const { downloadUpdateLoop } = require('./utils/downloadSetup');
 const mongoUser = config.get('Database.user');
 const mongoPass = config.get('Database.password');
 const mongoPort = config.get('Database.port');
@@ -45,6 +46,7 @@ async function run(err, client) {
   setupRoutes(app, db);
   setupMailer(db);
   setupSpeedtester(db);
+  downloadUpdateLoop(db);
 
   app.listen(port, () => console.log(`listening on port ${port}`));
 
