@@ -1,14 +1,14 @@
-const nodemailer = require('nodemailer');
-const _remove = require('lodash/remove');
-const _isEmpty = require('lodash/isEmpty');
-const generateEmail = require('../utils/emailSetup');
+import nodemailer from 'nodemailer';
+import _remove from 'lodash/remove';
+import _isEmpty from 'lodash/isEmpty';
+import generateEmail from '../utils/emailSetup';
 const dayInMilliSeconds = 86400000;
 const mailer = { transporter: null };
 const dailyList = [];
 const weeklyList = [];
 const monthlyList = [];
 
-function setupMailer(db) {
+export function setupMailer(db) {
   db.collection('config').find({docName: {$eq: 'config'}}).toArray((err, result) => {
     if (err) throw err;
     const config = result[0];
@@ -30,7 +30,7 @@ function setupMailer(db) {
   });
 }
 
-function updateMailer(address, password) {
+export function updateMailer(address, password) {
   if (address === null) {
     mailer.transporter = null;
   } else {
@@ -54,7 +54,7 @@ function setupMailLists(db) {
   startDayCycle(db);
 }
 
-function pushToMailLists(email, frequency) {
+export function pushToMailLists(email, frequency) {
   switch (frequency) {
     case 'daily':
       dailyList.push(email);
@@ -70,7 +70,7 @@ function pushToMailLists(email, frequency) {
   }
 }
 
-function removeFromMailLists(email) {
+export function removeFromMailLists(email) {
   _remove(dailyList, email);
   _remove(weeklyList, email);
   _remove(monthlyList, email);
@@ -89,7 +89,7 @@ async function sendUpdateEmail(address, graph) {
   console.log('Error message: ' + info.response);
 }
 
-async function sendFirstEmail(address) {
+export async function sendFirstEmail(address) {
   if (!mailer.transporter) return;
   const mailOptions = {
     from: 'Speedtester',
@@ -120,5 +120,3 @@ function startDayCycle(db) {
     }
   }, dayInMilliSeconds);
 }
-
-module.exports = {setupMailer, updateMailer, sendFirstEmail, pushToMailLists, removeFromMailLists};

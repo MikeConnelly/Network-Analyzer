@@ -1,8 +1,8 @@
-const { sendFirstEmail } = require('../services/mailer');
-const { pushToMailLists } = require('../services/mailer');
-const { removeFromMailLists } = require('../services/mailer');
+import { sendFirstEmail } from '../services/mailer';
+import { pushToMailLists } from '../services/mailer';
+import { removeFromMailLists } from '../services/mailer';
 
-module.exports = (route, app, db) => {
+export default (route, app, db) => {
   app.route(`${route}/`)
     .put((req, res) => {
       const email = req.body.email;

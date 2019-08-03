@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import {AreaChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Label, Area} from 'recharts';
 

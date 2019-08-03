@@ -1,5 +1,5 @@
-const fse = require('fs-extra');
-const _sortBy = require('lodash');
+import fse from 'fs-extra';
+import _sortBy from 'lodash/sortBy';
 const filePath = `${__dirname}/../data/data.json`;
 const dayInMilliSeconds = 86400000;
 
@@ -17,7 +17,7 @@ async function createDownloadFile(db) {
   });
 }
 
-async function updateDownloadFile(db) {
+export async function updateDownloadFile(db) {
   if (!fse.existsSync(filePath)) {
     return createDownloadFile(db);
   } else {
@@ -35,10 +35,8 @@ async function updateDownloadFile(db) {
   }
 }
 
-function downloadUpdateLoop(db) {
+export function downloadUpdateLoop(db) {
   setInterval(() => {
     updateDownlaodFile(db);
   }, dayInMilliSeconds);
 }
-
-module.exports = { updateDownloadFile, downloadUpdateLoop };

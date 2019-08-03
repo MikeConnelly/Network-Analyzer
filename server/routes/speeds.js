@@ -1,4 +1,4 @@
-module.exports = (route, app, db) => {
+export default (route, app, db) => {
   app.get(`${route}/one/:datetime`, (req, res) => {
     if (!req.params.datetime) {
       res.status(400).send({error: 'missing datetime parameter'});

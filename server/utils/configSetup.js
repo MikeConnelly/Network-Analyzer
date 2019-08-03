@@ -82,4 +82,4 @@ function setDefaultConfig(err, collection) {
   });
 }
 
-module.exports = checkForConfig;
+export default checkForConfig;

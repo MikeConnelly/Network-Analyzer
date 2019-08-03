@@ -1,7 +1,7 @@
-const { updateSpeedtesterFrequency } = require('../services/speedtester');
-const { updateMailer } = require('../services/mailer');
+import { updateSpeedtesterFrequency } from '../services/speedtester';
+import { updateMailer } from '../services/mailer';
 
-module.exports = (route, app, db) => {
+export default (route, app, db) => {
   const collection = db.collection('config');
   const configQuery = {
     docName: {$eq: 'config'}

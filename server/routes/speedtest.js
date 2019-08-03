@@ -1,6 +1,6 @@
-const speedTest = require('speedtest-net');
+import speedTest from 'speedtest-net';
 
-module.exports = (route, app) => {
+export default (route, app) => {
   app.get(`${route}/`, (req, res) => {
     const test = speedTest({maxTime: 5000});
     test.on('data', data => {

@@ -1,7 +1,7 @@
-const speedTest = require('speedtest-net');
+import speedTest from 'speedtest-net';
 const speedtester = { frequency: 300000 };
 
-function setupSpeedtester(db) {
+export function setupSpeedtester(db) {
   db.collection('config').find({docName: {$eq: 'config'}}).toArray((err, result) => {
     if (err) throw err;
     speedtester.frequency = result[0].frequency;
@@ -12,14 +12,18 @@ function setupSpeedtester(db) {
 function insertCurrentSpeed(db) {
   const collection = db.collection('speeds');
   const currentDateTime = Date.now();
-  var test = speedTest({maxTime: 5000});
-  test.on('data', data => {
-    data.dateTime = currentDateTime;
-    collection.insertOne(data);
-  });
+  try {
+    const test = speedTest({maxTime: 5000});
+    test.on('data', data => {
+      data.dateTime = currentDateTime;
+      collection.insertOne(data);
+    });
+  } catch(err) {
+    console.log(`Speedtest error: ${err}`);
+  }
 }
 
-function updateSpeedtesterFrequency(frequency) {
+export function updateSpeedtesterFrequency(frequency) {
   speedtester.frequency = frequency;
 }
 
@@ -34,5 +38,3 @@ function speedTestLoop(db) {
     }
   }, 30000);
 }
-
-module.exports = {setupSpeedtester, updateSpeedtesterFrequency};
