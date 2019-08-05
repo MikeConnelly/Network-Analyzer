@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { LinearProgress, withStyles, Typography, Switch } from '@material-ui/core';
+import { LinearProgress, withStyles, Typography, Switch, FormControlLabel } from '@material-ui/core';
 import _isEmpty from 'lodash/isEmpty';
 import _get from 'lodash/get';
 import ReactJson from 'react-json-view';
@@ -80,7 +80,18 @@ class SpeedtestResults extends Component {
           : (_isEmpty(data)
             ? <div className="results-empty" />
             : <>
-                <Switch color="primary" checked={advanced} onChange={() => this.props.handleChange(advanced)} value="advanced" />
+                <FormControlLabel
+                  control={
+                    <Switch 
+                      color="primary"
+                      checked={advanced}
+                      value="advanced"
+                      label="advanced"
+                      onChange={() => this.props.handleChange(advanced)}
+                    />
+                  }
+                  label="advanced"
+                />
                 {resultFormat}
               </>
            )
