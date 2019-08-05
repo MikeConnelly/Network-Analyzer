@@ -3,7 +3,8 @@ import { Switch, Route } from 'react-router';
 import HomeContainer from './components/home/HomeContainer';
 import HeaderContainer from './components/header/HeaderContainer';
 import DetailContainer from './components/detail/DetailContainer';
-import SettingsContainer from './components/settings/SettingsContainer';
+// import SettingsContainer from './components/settings/SettingsContainer';
+import Settings from './components/settings/Settings';
 import './App.css';
 
 function App() {
@@ -16,7 +17,7 @@ function App() {
         <Switch>
           <Route exact path='/' component={HomeContainer} />
           <Route path='/detail' component={DetailContainer} />
-          <Route path='/settings' component={SettingsContainer} />
+          <Route path='/settings' component={Settings} />
         </Switch>
       </div>
     </div>
