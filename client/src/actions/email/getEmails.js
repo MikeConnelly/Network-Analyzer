@@ -33,6 +33,6 @@ export const getEmails = () => {
         dispatch(getEmailsSuccess(data));
         return data;
       })
-      .catch(error => dispatch(getEmailsFailure(error)));
+      .catch(err => dispatch(getEmailsFailure(err)));
   }
 }

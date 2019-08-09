@@ -20,7 +20,7 @@ export const addEmailFailure = error => {
   };
 };
 
-export const addEmail = (email, options) => {
+export const addEmail = (email, options, cb) => {
   return function(dispatch) {
     dispatch(addEmailBegin());
     fetch(`${proxy()}/api/email`, {
@@ -28,7 +28,13 @@ export const addEmail = (email, options) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: email, options: options })
     })
-      .then(() => dispatch(addEmailSuccess()))
-      .catch(error => dispatch(addEmailFailure(error)));
+      .then(() => {
+        dispatch(addEmailSuccess())
+        if (cb) cb();
+      })
+      .catch(err => {
+        dispatch(addEmailFailure(err))
+        if (cb) cb(err)
+      });
   };
 };

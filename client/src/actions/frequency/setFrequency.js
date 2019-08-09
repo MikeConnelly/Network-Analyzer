@@ -20,7 +20,7 @@ export const setFrequencyFailure = error => {
   };
 };
 
-export const setFrequency = freq => {
+export const setFrequency = (freq, cb) => {
   return function(dispatch) {
     dispatch(setFrequencyBegin());
     fetch(`${proxy()}/api/config/frequency`, {
@@ -28,7 +28,13 @@ export const setFrequency = freq => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ frequency: freq })
     })
-      .then(() => dispatch(setFrequencySuccess()))
-      .catch(error => dispatch(setFrequencyBegin(error)));
+      .then(() => {
+        dispatch(setFrequencySuccess());
+        if (cb) cb();
+      })
+      .catch(err => {
+        dispatch(setFrequencyBegin(err));
+        if (cb) cb(err);
+      });
   };
 };

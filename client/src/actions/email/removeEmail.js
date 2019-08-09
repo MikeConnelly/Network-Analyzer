@@ -20,7 +20,7 @@ export const removeEmailFailure = error => {
   };
 };
 
-export const removeEmail = email => {
+export const removeEmail = (email, cb) => {
   return function(dispatch) {
     dispatch(removeEmailBegin());
     fetch(`${proxy()}/api/email/`, {
@@ -28,7 +28,13 @@ export const removeEmail = email => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: email })
     })
-      .then(() => dispatch(removeEmailSuccess()))
-      .catch(error => dispatch(removeEmailFailure(error)));
+      .then(() => {
+        dispatch(removeEmailSuccess());
+        if (cb) cb();
+      })
+      .catch(err => {
+        dispatch(removeEmailFailure(err));
+        if (cb) cb(err);
+      });
   };
 };

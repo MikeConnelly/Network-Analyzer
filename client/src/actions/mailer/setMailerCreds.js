@@ -20,7 +20,7 @@ export const setMailerFailure = error => {
   };
 };
 
-export const setMailerCreds = creds => {
+export const setMailerCreds = (creds, cb) => {
   return function(dispatch) {
     dispatch(setMailerBegin());
     fetch(`${proxy()}/api/config/mailer`, {
@@ -28,7 +28,13 @@ export const setMailerCreds = creds => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user: creds.address, pass: creds.password })
     })
-      .then(() => dispatch(setMailerSuccess()))
-      .catch(error => dispatch(setMailerBegin(error)));
+      .then(() => {
+        dispatch(setMailerSuccess());
+        if (cb) cb();
+      })
+      .catch(err => {
+        dispatch(setMailerBegin(err));
+        if (cb) cb(err);
+      });
   };
 };
