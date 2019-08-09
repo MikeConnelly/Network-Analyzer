@@ -10,6 +10,7 @@ import setFrequency from './frequency/setFrequency';
 import getMailerCreds from './mailer/getMailerCreds';
 import setMailerCreds from './mailer/setMailerCreds';
 import changeResultType from './results/changeResultType';
+import setDateRange from './datepicker/setDateRange';
 
 const rootReducer = combineReducers({
   getRecent,
@@ -22,7 +23,8 @@ const rootReducer = combineReducers({
   setFrequency,
   getMailerCreds,
   setMailerCreds,
-  changeResultType
+  changeResultType,
+  setDateRange
 });
 
 export default rootReducer;

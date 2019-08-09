@@ -22,6 +22,7 @@ export default (route, app, db) => {
           sendFirstEmail(email);
         }
         pushToMailLists(email, options.frequency);
+        res.status(200).json({ doc });
       }
     })
     .delete((req, res) => {
@@ -30,6 +31,9 @@ export default (route, app, db) => {
         const collection = db.collection('maillist');
         collection.deleteOne({address: email});
         removeFromMailLists(email);
+        res.status(200).send({ message: `${email} removed` });
+      } else {
+        res.status(400).send({ message: 'no email given' });
       }
     });
 

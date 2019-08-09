@@ -1,4 +1,4 @@
-import updateDownloadFile from '../utils/downloadSetup';
+import {updateDownloadFile} from '../utils/downloadSetup';
 const filePath = `${__dirname}/../data/data.json`;
 
 export default (route, app, db) => {

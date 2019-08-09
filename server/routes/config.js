@@ -23,6 +23,7 @@ export default (route, app, db) => {
         };
         collection.updateOne(configQuery, update);
         updateSpeedtesterFrequency(req.body.frequency);
+        res.status(200).json({ frequency: req.body.frequency });
       }
     });
   
@@ -47,11 +48,13 @@ export default (route, app, db) => {
       } else {
         const update = {$set: {map: req.body.map}};
         collection.updateOne(configQuery, update);
+        res.status(200).json({ map: req.body.map });
       }
     })
     .delete((req, res) => {
       const update = {$set: {map: ""}};
       collection.updateOne(configQuery, update);
+      res.status(200).send({ message: 'map key removed' });
     });
   
   app.route(`${route}/mailer`)
@@ -81,6 +84,7 @@ export default (route, app, db) => {
         }
         collection.updateOne(configQuery, update);
         updateMailer(req.body.user, req.body.pass);
+        res.status(200).json({ user: req.body.user, pass: req.body.pass });
       }
     })
     .delete((req, res) => {
@@ -92,6 +96,7 @@ export default (route, app, db) => {
       }
       collection.updateOne(configQuery, update);
       updateMailer(null);
+      res.status(200).send({ message: 'mailer creds removed' });
     });
 
   app.put(`${route}/admin`, (req, res) => {
@@ -105,6 +110,7 @@ export default (route, app, db) => {
         }
       }
       collection.updateOne(configQuery, update);
+      res.status(200).json({ user: req.body.user, pass: req.body.pass });
     }
   });
 }
