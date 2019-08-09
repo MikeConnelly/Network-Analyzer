@@ -6,19 +6,19 @@ services:
       - "27017:27017"
     volumes:
       - ./scripts/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
-  backend:
-    build: ./backend/
+  server:
+    build: ./server/
     ports:
       - "5000:5000"
     volumes:
-      - ./backend:/usr/src/app
+      - ./server:/usr/src/app
     depends_on:
       - mongodb
-  frontend:
-    build: ./frontend/
+  client:
+    build: ./client/
     ports:
       - "3000:3000"
     volumes:
-      - ./frontend:/usr/src/app
+      - ./client:/usr/src/app
     depends_on:
-      - backend
+      - server

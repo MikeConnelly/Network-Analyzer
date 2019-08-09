@@ -29,9 +29,13 @@ MongoClient.connect(mongoURL, {
 async function run(err, client) {
   if (err) throw err;
 
-  findDevices().then(devices => {
-    console.log(devices);
-  });
+  findDevices()
+    .then(devices => {
+      console.log(devices);
+    })
+    .catch(err => {
+      console.log('arp command not found, cannot find connected devices');
+    });
 
   console.log(`mongo connected to ${mongoURL}`);
   const db = client.db(dbName);
