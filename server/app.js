@@ -7,6 +7,7 @@ import setupRoutes from './routes';
 import { setupMailer } from './services/mailer';
 import { setupSpeedtester } from './services/speedtester';
 import { downloadUpdateLoop } from './utils/downloadSetup';
+import findDevices from 'local-devices';
 const mongoUser = config.get('Database.user');
 const mongoPass = config.get('Database.password');
 const mongoPort = config.get('Database.port');
@@ -27,6 +28,10 @@ MongoClient.connect(mongoURL, {
 
 async function run(err, client) {
   if (err) throw err;
+
+  findDevices().then(devices => {
+    console.log(devices);
+  });
 
   console.log(`mongo connected to ${mongoURL}`);
   const db = client.db(dbName);
