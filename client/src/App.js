@@ -3,7 +3,6 @@ import { Switch, Route } from 'react-router';
 import HomeContainer from './components/home/HomeContainer';
 import HeaderContainer from './components/header/HeaderContainer';
 import DetailContainer from './components/detail/DetailContainer';
-// import SettingsContainer from './components/settings/SettingsContainer';
 import Settings from './components/settings/Settings';
 import './App.css';
 
