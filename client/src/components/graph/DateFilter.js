@@ -5,51 +5,42 @@ import "react-datepicker/dist/react-datepicker.css";
 class DateFilter extends Component {
   constructor(props) {
     super(props);
-    const now = Date.now();
-    this.state = {
-      startDate: now,
-      endDate: now
-    };
     this.handleChangeStart = this.handleChangeStart.bind(this);
     this.handleChangeEnd = this.handleChangeEnd.bind(this);
   }
 
-  componentDidMount() {
-    const now = new Date();
-    const twentyFourHourAgoTime = now.setDate(now.getDate() - 1);
-    this.setState({ startDate: twentyFourHourAgoTime, endDate: Date.now() });
+  handleChangeStart = date => {
+    date = date.getTime();
+    this.props.actions.setStartDate(date);
+    this.props.actions.getRecent(date, this.props.endDate);
   }
 
-  handleChangeStart = async (date) => {
+  handleChangeEnd = date => {
     date = date.getTime();
-    await this.setState({ startDate: date });
-    this.props.actions.getRecent(this.state.startDate, this.state.endDate);
-  }
-
-  handleChangeEnd = async (date) => {
-    date = date.getTime();
-    await this.setState({ endDate: date });
-    this.props.actions.getRecent(this.state.startDate, this.state.endDate);
+    this.props.actions.setEndDate(date);
+    this.props.actions.getRecent(this.props.startDate, date);
   }
 
   render() {
+    const { startDate, endDate } = this.props;
+
     return (
       <div className="date-filter">
         <DatePicker
-          selected={this.state.startDate}
+          selected={startDate}
           selectsStart
-          startDate={this.state.startDate}
-          endDate={this.state.endDate}
+          startDate={startDate}
+          endDate={endDate}
           onChange={this.handleChangeStart}
-          maxDate={this.state.endDate}
+          maxDate={endDate}
         />
         <DatePicker
-          selected={this.state.endDate}
+          selected={endDate}
           selectsEnd
-          startDate={this.state.startDate}
-          endDate={this.state.endDate}
+          startDate={startDate}
+          endDate={endDate}
           onChange={this.handleChangeEnd}
-          minDate={this.state.startDate}
+          minDate={startDate}
         />
       </div>
     );
