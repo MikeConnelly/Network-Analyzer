@@ -25,3 +25,8 @@
     display: flex;
     flex-direction: column;
 }
+
+.settings #mailer-creds-input #update-mailer-button,
+.settings #mailer-creds-input #remove-mailer-button {
+    margin-top: 10px;
+}

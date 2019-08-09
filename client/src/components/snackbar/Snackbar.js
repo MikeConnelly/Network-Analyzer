@@ -1,35 +1,76 @@
-import React from 'react';
-import { Typography, SnackbarContent, IconButton } from '@material-ui/core';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { IconButton, Snackbar, SnackbarContent, withStyles } from '@material-ui/core';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import ErrorIcon from '@material-ui/icons/Error';
 import CloseIcon from '@material-ui/icons/Close';
-import { green } from '@material-ui/core/colors';
-import { makeStyles } from '@material-ui/core/styles';
+import { red, green } from '@material-ui/core/colors';
 
-//const styles = makeStyles(theme => ({
-//  backgroundColor: green[600],
-//  icon: {
-//    fontSize: 20
-//  }
-//}));
+const styles = {
+  message: {
+    display: 'flex',
+    alignItems: 'center'
+  },
+  icon: {
+    fontSize: 20,
+    opacity: 0.9
+  },
+  successVariant: {
+    backgroundColor: green[600]
+  },
+  errorVariant: {
+    backgroundColor: red[500]
+  }
+};
 
-export default function customSnackbar(message) {
-  //const classes = styles();
-  console.log('snackbar');
+class CustomSnackbar extends Component {
+  render() {
+    const { classes, open, handleClose, status } = this.props;
+    const message = status ? 'success' : 'error';
+    const Icon = status ? CheckCircleIcon : ErrorIcon;
 
-  return (
-    <SnackbarContent
-      className={`snackbar-success ${green[600]}`}
-      message={
-        <Typography variant="body1">
-          <CheckCircleIcon className={{fontSize: 20}} />
-          {message}
-        </Typography>
-      }
-      action={[
-        <IconButton key="close" aria-label="Close" color="inherit">
-          <CloseIcon className={{fontSize: 20}} />
-        </IconButton>
-      ]}
-    />
-  );
+    return (
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left'
+        }}
+        open={open}
+        autoHideDuration={5000}
+        onClose={handleClose}
+      >
+        <SnackbarContent
+          className={classes[status ? 'successVariant' : 'errorVariant']}
+          message={
+            <span id="snackbar-message" className={classes.message}>
+              <Icon />
+              {message}
+            </span>}
+          action={[
+            <IconButton
+              key="close"
+              aria-label="close"
+              className={classes.close}
+              onClick={handleClose}
+            >
+              <CloseIcon />
+            </IconButton>
+          ]}
+        />
+      </Snackbar>
+    );
+  }
 }
+
+Snackbar.propTypes = {
+  handleClose: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
+  status: PropTypes.bool.isRequired
+};
+
+Snackbar.defaultProps = {
+  open: false,
+  status: false
+};
+
+export default withStyles(styles)(CustomSnackbar);

@@ -31,11 +31,16 @@ class MailList extends Component {
     }
   }
 
-  async handleRemoveEmail(address) {
-    await this.props.actions.removeEmail(address);
-    const newEmails = this.state.emails.filter(email => email.address !== address);
-    this.setState({ emails: newEmails });
-    this.props.openSnackbar(true);
+  handleRemoveEmail(address) {
+    this.props.actions.removeEmail(address, err => {
+      if (err) {
+        this.props.openSnackbar(false);
+      } else {
+        const newEmails = this.state.emails.filter(email => email.address !== address);
+        this.setState({ emails: newEmails });
+        this.props.openSnackbar(true);
+      }
+    });
   }
 
   generateEmailListItems() {
@@ -53,15 +58,15 @@ class MailList extends Component {
 
   render() {
     const list = !_isEmpty(this.state.emails)
-    ? (
-      <List dense={true}>
-        {this.generateEmailListItems()}
-      </List>
-    ) : (
-      <Typography>
-        no email addresses set up for notifications
-      </Typography>
-    );
+      ? (
+        <List dense={true}>
+          {this.generateEmailListItems()}
+        </List>
+      ) : (
+        <Typography>
+          no email addresses set up for notifications
+        </Typography>
+      );
 
     return (
       <div className="settings-category">

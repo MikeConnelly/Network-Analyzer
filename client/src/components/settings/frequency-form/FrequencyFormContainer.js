@@ -5,12 +5,13 @@ import * as getFrequencyActions from '../../../actions/frequency/getFrequency';
 import * as setFrequencyActions from '../../../actions/frequency/setFrequency';
 import FrequencyForm from './FrequencyForm';
 
-export const FrequencyFormContainer = ({ actions, getFrequency }) => {
+export const FrequencyFormContainer = ({ actions, getFrequency, openSnackbar }) => {
   return (
     <FrequencyForm
       actions={actions}
       frequency={getFrequency.data}
       frequencyIsFetching={getFrequency.pending}
+      openSnackbar={openSnackbar}
     />
   );
 }

@@ -98,10 +98,16 @@ class FrequencyForm extends Component {
     this.validateFrequency();
   }
 
-  async handleSetFrequency() {
+  handleSetFrequency() {
     this.setState({ validFrequency: false });
-    this.props.actions.setFrequency(this.convertHMSToMilliSeconds(this.state.frequency));
-    this.props.actions.getFrequency();
+    this.props.actions.setFrequency(this.convertHMSToMilliSeconds(this.state.frequency), err => {
+      if (err) {
+        this.props.openSnackbar(false);
+      } else {
+        this.props.openSnackbar(true);
+        this.props.actions.getFrequency();
+      }
+    });
   }
 
   render() {
@@ -145,7 +151,9 @@ class FrequencyForm extends Component {
           <Button 
             id="validate-frequency-button"
             disabled={!this.state.validFrequency || this.convertHMSToMilliSeconds(this.state.frequency) === this.props.frequency.frequency}
-            onClick={() => this.handleSetFrequency()}>
+            onClick={() => this.handleSetFrequency()}
+            variant="contained"
+            color="secondary">
             update
           </Button>
         </div>
