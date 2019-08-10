@@ -2,16 +2,18 @@
   width: 500px !important;
 }
 
-.remove-email-popup {
+.add-email-popup {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
 
-.remove-email-popup .popup-text {
-  display: inline-block;
+.add-email-popup .popup-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   width: 250px;
-  height: 100px;
+  height: 150px;
   margin: 10px;
   text-align: left;
 }
@@ -20,13 +22,13 @@
   display: inline-block;
 }
 
-.remove-email-popup .form {
+.add-email-popup .form {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: 10px;
 }
 
-.remove-email-popup .form .textfield {
+.add-email-popup .form .textfield {
   width: 200px;
 }

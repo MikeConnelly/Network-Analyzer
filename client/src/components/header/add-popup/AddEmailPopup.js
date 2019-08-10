@@ -46,10 +46,9 @@ class AddEmailPopup extends Component {
         onClose={this.props.close}>
         <div className="add-email-popup">
           <div className="popup-text">
-            <Typography variant="body1">
+            <Typography variant="h6">
               Enter your email address and the frequency that you would like 
-              to recieve emails. If your email has already been added you 
-              can enter it again to update the frequency.
+              to recieve notifications.
             </Typography>
           </div>
           <div className="popup-right">
