@@ -111,7 +111,7 @@ class FrequencyForm extends Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, frequency } = this.props;
     
     return (
       <div id="frequency-form">
@@ -150,7 +150,10 @@ class FrequencyForm extends Component {
           </div>
           <Button 
             id="validate-frequency-button"
-            disabled={!this.state.validFrequency || this.convertHMSToMilliSeconds(this.state.frequency) === this.props.frequency.frequency}
+            disabled={
+              !this.state.validFrequency
+              || this.convertHMSToMilliSeconds(this.state.frequency) === frequency.frequency
+            }
             onClick={() => this.handleSetFrequency()}
             variant="contained"
             color="secondary">

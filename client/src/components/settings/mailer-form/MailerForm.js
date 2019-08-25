@@ -19,6 +19,7 @@ class MailerForm extends Component {
     this.handleAddressChange = this.handleAddressChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handleSetMailerCreds = this.handleSetMailerCreds.bind(this);
+    this.validateMailer = this.validateMailer.bind(this);
   }
 
   componentDidMount() {
@@ -29,6 +30,16 @@ class MailerForm extends Component {
     if (!_isEmpty(nextProps.mailer) && nextProps.mailer.user.length > 0 && nextProps.mailer.pass.length > 0 && nextProps.mailer !== this.props.mailer) {
       const newMailer = { address: nextProps.mailer.user, password: nextProps.mailer.pass };
       this.setState({ mailer: newMailer });
+    }
+  }
+
+  validateMailer() {
+    const { address, password } = this.state.mailer;
+    const { user, pass } = this.props.mailer;
+    if (address === user && password === pass) {
+      return false;
+    } else {
+      return true;
     }
   }
 
@@ -51,10 +62,14 @@ class MailerForm extends Component {
   }
 
   handleSetMailerCreds() {
-    this.props.actions.setMailerCreds(this.state.mailer);
+    this.props.actions.setMailerCreds(this.state.mailer, err => {
+      if (err) this.props.openSnackbar(false);
+      else this.props.openSnackbar(true);
+    });
   }
 
   render() {
+    console.log(this.props.mailer)
     return (
       <div className="settings-category">
         <Typography variant="h6">
@@ -77,7 +92,7 @@ class MailerForm extends Component {
           />
           <Button 
             id="update-mailer-button"
-            disabled={false}
+            disabled={!this.validateMailer()}
             onClick={this.handleSetMailerCreds}
             variant="contained"
             color="secondary">
@@ -105,7 +120,8 @@ MailerForm.propTypes = {
   mailer: PropTypes.shape({
     user: PropTypes.string,
     pass: PropTypes.string
-  })
+  }),
+  openSnackbar: PropTypes.func.isRequired
 };
 
 export default MailerForm;

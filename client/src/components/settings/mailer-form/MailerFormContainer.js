@@ -5,12 +5,13 @@ import * as getMailerActions from '../../../actions/mailer/getMailerCreds';
 import * as setMailerActions from '../../../actions/mailer/setMailerCreds';
 import MailerForm from './MailerForm';
 
-export const MailerFormContainer = ({ actions, getMailerCreds }) => {
+export const MailerFormContainer = ({ actions, getMailerCreds, openSnackbar }) => {
   return (
     <MailerForm
       actions={actions}
       mailer={getMailerCreds.data}
       mailerIsFetching={getMailerCreds.pending}
+      openSnackbar={openSnackbar}
     />
   );
 }
