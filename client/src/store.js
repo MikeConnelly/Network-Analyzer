@@ -9,12 +9,13 @@ const middlewares = [thunk];
 const persistConfig = {
   key: 'root',
   storage,
-}
+  whitelist: ['setDateRange', 'changeResultType', 'getRecent']
+};
 
-const persistedReducer = persistReducer(persistConfig, rootReducer)
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export default () => {
-  let store = createStore(persistedReducer, applyMiddleware(...middlewares))
-  let persistor = persistStore(store)
-  return { store, persistor }
+  let store = createStore(persistedReducer, applyMiddleware(...middlewares));
+  let persistor = persistStore(store);
+  return { store, persistor };
 }
