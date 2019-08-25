@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Button, withStyles} from '@material-ui/core';
 import GraphContainer from '../graph/GraphContainer';
-import SpeedtestResultsWrapper from '../speedtest-results/SpeedtestResultsWrapper';
+import SpeedtestResultsContainer from '../speedtest-results/SpeedtestResultsContainer';
 import './Home.css';
 
 const styles = {
@@ -28,7 +28,7 @@ class Home extends Component {
           classes={{ root: classes.root }}>
           test speed now
         </Button>
-        <SpeedtestResultsWrapper data={speedtestData} isFetching={speedtestIsFetching} />
+        <SpeedtestResultsContainer data={speedtestData} isFetching={speedtestIsFetching} />
       </div>
     );
   }

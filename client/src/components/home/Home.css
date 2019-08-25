@@ -5,9 +5,7 @@
     justify-content: center;
 }
 
-.home .speedtest-results #speeds,
-.home .speedtest-results #client,
-.home .speedtest-results #server {
+.home .speedtest-results .result-section {
     display: inline-block;
     vertical-align: top;
 }

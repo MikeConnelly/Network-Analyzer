@@ -5,7 +5,7 @@ import * as actions from '../../actions/results/changeResultType';
 import PropTypes from 'prop-types';
 import SpeedtestResults from './SpeedtestResults';
 
-export const SpeedtestResultsWrapper = ({ actions, advanced, ...props }) => {
+export const SpeedtestResultsContainer = ({ actions, advanced, ...props }) => {
   return (
     <SpeedtestResults 
       data={props.data} 
@@ -28,14 +28,14 @@ const mapDispatchToProps = dispatch => {
   };
 }
 
-SpeedtestResultsWrapper.propTypes = {
+SpeedtestResultsContainer.propTypes = {
   data: PropTypes.object,
   isFetching: PropTypes.bool
 }
 
-SpeedtestResultsWrapper.defaultProps = {
+SpeedtestResultsContainer.defaultProps = {
   data: {},
   isFetching: false
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SpeedtestResultsWrapper);
+export default connect(mapStateToProps, mapDispatchToProps)(SpeedtestResultsContainer);
