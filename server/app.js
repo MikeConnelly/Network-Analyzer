@@ -29,6 +29,7 @@ MongoClient.connect(mongoURL, {
 async function run(err, client) {
   if (err) throw err;
 
+  // test local-devices lib
   findDevices()
     .then(devices => {
       console.log(devices);

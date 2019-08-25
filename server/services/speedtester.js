@@ -12,15 +12,14 @@ export function setupSpeedtester(db) {
 function insertCurrentSpeed(db) {
   const collection = db.collection('speeds');
   const currentDateTime = Date.now();
-  try {
-    const test = speedTest({maxTime: 5000});
-    test.on('data', data => {
-      data.dateTime = currentDateTime;
-      collection.insertOne(data);
-    });
-  } catch(err) {
+  const test = speedTest({maxTime: 5000});
+  test.on('data', data => {
+    data.dateTime = currentDateTime;
+    collection.insertOne(data);
+  });
+  test.on('error', err => {
     console.log(`Speedtest error: ${err}`);
-  }
+  });
 }
 
 export function updateSpeedtesterFrequency(frequency) {
