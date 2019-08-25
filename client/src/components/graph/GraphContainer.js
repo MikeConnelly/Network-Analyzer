@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
-import _isEmpty from 'lodash/isEmpty';
 import * as getRecentActions from '../../actions/speeds/getRecent';
 import * as getOneActions from '../../actions/speeds/getOne';
 import * as dateRangeActions from '../../actions/datepicker/setDateRange';
@@ -17,13 +16,13 @@ class GraphContainer extends Component {
   }
 
   componentDidMount() {
-    if (_isEmpty(this.props.recent.data)) {
+    if (!window.location.pathname.includes('detail')) {
       const currentDateTime = Date.now();
       const now = new Date();
       const twentyFourHourAgoTime = now.setDate(now.getDate() - 1);
       this.props.actions.getRecent(twentyFourHourAgoTime, currentDateTime);
-      if (!this.props.dateRange.startDate) this.props.actions.setStartDate(twentyFourHourAgoTime);
-      if (!this.props.dateRange.endDate) this.props.actions.setEndDate(currentDateTime);
+      this.props.actions.setStartDate(twentyFourHourAgoTime);
+      this.props.actions.setEndDate(currentDateTime);
     }
   }
 
@@ -41,21 +40,10 @@ class GraphContainer extends Component {
 
   render() {
     const { actions, recent, dateRange } = this.props;
-    const recentData = recent.data;
-    
-    if (recent.loading) {
-      return <div id="data-fetching" className="graph-wrapper"></div>;
-    }
-
-    recentData.forEach(result => {
-      const date = new Date(result.dateTime);
-      result.dateObject = date;
-      result.dateObject.xaxis = date.getDate();
-    });
 
     return (
       <div className="graph-wrapper">
-        <Graph data={recentData} openDetail={this.graphClicked} />
+        <Graph recentData={recent.data} recentIsFetching={recent.loading} openDetail={this.graphClicked} />
         <DateFilter actions={actions} startDate={dateRange.startDate} endDate={dateRange.endDate} />
       </div>
     );

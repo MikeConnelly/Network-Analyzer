@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _isEmpty from 'lodash/isEmpty';
 import GraphContainer from '../graph/GraphContainer';
-import SpeedtestResultsWrapper from '../speedtest-results/SpeedtestResultsWrapper';
+import SpeedtestResultsContainer from '../speedtest-results/SpeedtestResultsContainer';
 import './Detail.css';
     
 class Detail extends Component {
@@ -26,7 +26,7 @@ class Detail extends Component {
           <GraphContainer />
         </div>
         <div className="detail-right">
-          {!_isEmpty(detailData) && <SpeedtestResultsWrapper data={detailData} isFetching={false} />}
+          {!_isEmpty(detailData) && <SpeedtestResultsContainer data={detailData} isFetching={false} />}
         </div>
       </div>
     );

@@ -11,3 +11,7 @@
 .graph-wrapper .date-filter {
   padding: 20px;
 }
+
+.graph-wrapper #data-fetching {
+  padding-top: 20px;
+}

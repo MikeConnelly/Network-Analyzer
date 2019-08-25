@@ -10,8 +10,6 @@
   width: 50%;
 }
 
-.detail .speedtest-results #speeds,
-.detail .speedtest-results #client,
-.detail .speedtest-results #server {
-  padding: 2em
+.detail .speedtest-results .result-section {
+  padding: 1em
 }

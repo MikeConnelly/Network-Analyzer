@@ -1,15 +1,41 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {AreaChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Label, Area} from 'recharts';
+import { CircularProgress } from '@material-ui/core';
+import {
+  AreaChart,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  Label,
+  Area
+} from 'recharts';
 
 const Graph = ({ ...props }) => {
+  const { recentData, recentIsFetching, openDetail } = props;
+  
+  if (recentIsFetching) {
+    return (
+      <div id="data-fetching" className="graph-wrapper">
+        <CircularProgress variant="indeterminate" size={450} />
+      </div>
+    );
+  }
+
+  recentData.forEach(result => {
+    const date = new Date(result.dateTime);
+    result.dateObject = date;
+    result.dateObject.xaxis = date.getDate();
+  });
+
   return (
     <div className="graph">
       <AreaChart 
-        onClick={props.openDetail}
+        onClick={openDetail}
         width={800}
         height={450}
-        data={props.data}
+        data={recentData}
         margin={{ top: 20, right: 0, left: 0, bottom: 20 }}>
         <XAxis dataKey="dateObject.xaxis" minTickGap={20}>
           <Label value="day of the month" offset={0} position="bottom" />
@@ -27,7 +53,8 @@ const Graph = ({ ...props }) => {
 
 Graph.propTypes = {
   openDetail: PropTypes.func,
-  data: PropTypes.array
+  recentData: PropTypes.array,
+  recentIsFetching: PropTypes.bool
 }
 
 export default Graph;
